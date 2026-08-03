@@ -7,7 +7,6 @@ const API_URL = 'http://localhost:8000';
 export default function Dashboard() {
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
-  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,18 +16,11 @@ export default function Dashboard() {
       return;
     }
 
-    // Fetch user profile
-    axios
-      .get(`${API_URL}/api/users/me`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      .then((res) => setUser(res.data))
-      .catch(() => navigate('/login'));
-
-    // Fetch events
+    // Fetch events directly (bypassing the missing /api/users/me route)
     axios
       .get(`${API_URL}/api/events`)
       .then((res) => setEvents(res.data))
+      .catch((err) => console.error('Error fetching events:', err))
       .finally(() => setLoading(false));
   }, [navigate]);
 
@@ -45,11 +37,8 @@ export default function Dashboard() {
       {/* Header */}
       <header className="bg-white shadow">
         <div className="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
-          <h1 className="text-3xl font-bold">SHRM Tech 2026</h1>
+          <h1 className="text-3xl font-bold">EVENT AI</h1>
           <div className="flex items-center gap-4">
-            <span className="text-gray-600">
-              Welcome, {user?.name}!
-            </span>
             <button
               onClick={handleLogout}
               className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
@@ -78,8 +67,11 @@ export default function Dashboard() {
                 <p className="text-sm text-gray-500 mb-4">
                   {new Date(event.date).toLocaleDateString()}
                 </p>
-                <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-                  View Sessions
+                <button 
+                  onClick={() => navigate(`/events/${event.id}`)}
+                  className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+                >
+                  View Details
                 </button>
               </div>
             ))}
