@@ -8,6 +8,7 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
+import { Analytics } from "@vercel/analytics/react" // <-- Added Vercel Analytics Import here
 
 // Store
 import { useAuthStore } from './store/authStore'
@@ -232,6 +233,9 @@ const App = () => {
         {/* Fallback Route */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+      
+      {/* Vercel Analytics Component added here */}
+      <Analytics />
     </Router>
   )
 }
