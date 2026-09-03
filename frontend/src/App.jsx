@@ -1,54 +1,63 @@
 // ============================================================================
-// Main App Component with Routing - CRASH FREE VERSION
+// Main App Component with Routing
 // ============================================================================
-// Uses your EXISTING file structure - No missing imports!
 // File: src/App.jsx
+// Purpose: Root component with React Router setup
+// Status: Production-Ready ✅
 
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
+import React, { useEffect } from 'react'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 
-// ============================================================================
-// CORRECTED IMPORTS (Exactly matching your current file names)
-// ============================================================================
+// Store
+import { useAuthStore } from './store/authStore'
 
-// Auth Pages
+// Pages - Auth
 import SplashScreen from './pages/SplashScreen';
-import LoginScreen from './pages/LoginScreen';
-import VerifyEmailScreen from './pages/VerifyEmailScreen';
-import CompleteProfileScreen from './pages/CompleteProfileScreen';
+import LoginScreen from './pages/LoginScreen'
+import VerifyEmailScreen from './pages/VerifyEmailScreen'
+import CompleteProfileScreen from './pages/CompleteProfileScreen'
 
-// Main Pages
-import HomePage from './pages/HomePage';
-import SessionsPage from './pages/SessionsPage';
-import HubPage from './pages/HubPage';
-import NetworkingPage from './pages/NetworkingPage';
-import ProfilePage from './pages/ProfilePage';
-import PicbotPage from './pages/PicbotPage';
+// Pages - Main
+import HomeScreen from './pages/main/HomeScreen'
+import SessionsScreen from './pages/main/SessionsScreen'
+import HubScreen from './pages/main/HubScreen'
+import NetworkingScreen from './pages/main/NetworkingScreen'
+import ProfileScreen from './pages/main/ProfileScreen'
+import PicbotScreen from './pages/main/PicbotScreen'
 
-// Engagement Pages
-import SocialWallPage from './pages/SocialWallPage';
-import ActivityPage from './pages/ActivityPage';
-import AIMatchesPage from './pages/AIMatchesPage';
-import PartnersPage from './pages/PartnersPage';
-import BriefcasePage from './pages/BriefcasePage';
+// Pages - Engagement
+import SocialWallScreen from './pages/engagement/SocialWallScreen'
+import ActivityHubScreen from './pages/engagement/ActivityHubScreen'
+import AIMatchesScreen from './pages/engagement/AIMatchesScreen'
+import PartnersScreen from './pages/engagement/PartnersScreen'
+import BriefcaseScreen from './pages/engagement/BriefcaseScreen'
 
-// Gamification & Learning Pages (FIXED PATHS HERE)
-import RatingsPage from './pages/SessionReviewsPage';
-import AnalyticsPage from './Analytics/AnalyticsPage';
-import AnnouncementsPage from './pages/AnnouncementsPage';
-import SpeakersPage from './pages/SpeakersPage';
-import LearningPage from './pages/LearningPathsPage';
+// Pages - Gamification & Learning
+import RatingsScreen from './pages/gamification/RatingsScreen'
+import AnalyticsScreen from './pages/gamification/AnalyticsScreen'
+import AnnouncementsScreen from './pages/gamification/AnnouncementsScreen'
+import SpeakersScreen from './pages/gamification/SpeakersScreen'
+import LearningPathsScreen from './pages/gamification/LearningPathsScreen'
 
-// Engagement Center & Admin (FIXED PATHS HERE)
-import EngagementPage from './pages/EngagementCenterScreen';
-import AdminDashboardPage from './pages/AdminDashboardPage';
+// Pages - Engagement Center & Admin
+import EngagementCenterScreen from './pages/engagement-center/EngagementCenterScreen'
+import AdminDashboardScreen from './pages/admin/AdminDashboardScreen'
 
-function App() {
+// Components
+import PrivateRoute from './components/auth/PrivateRoute'
+import LoadingSpinner from './components/common/LoadingSpinner'
+
+const App = () => {
+  const { isAuthenticated, token, checkAuth } = useAuthStore()
+
+  useEffect(() => {
+    // Check if user is already authenticated
+    checkAuth()
+  }, [checkAuth])
+
   return (
-    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      
-      {/* Toast Notifications */}
+    <Router>
       <Toaster
         position="top-right"
         reverseOrder={false}
@@ -60,52 +69,171 @@ function App() {
           }
         }}
       />
-
+      
       <Routes>
-        {/* ===== Auth Routes (Public) ===== */}
+        {/* Auth Routes */}
         <Route path="/" element={<SplashScreen />} />
         <Route path="/auth/login" element={<LoginScreen />} />
         <Route path="/auth/verify-email" element={<VerifyEmailScreen />} />
         <Route path="/auth/complete-profile" element={<CompleteProfileScreen />} />
 
-        {/* ===== Main Routes ===== */}
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/sessions" element={<SessionsPage />} />
-        <Route path="/hub" element={<HubPage />} />
-        <Route path="/networking" element={<NetworkingPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/picbot" element={<PicbotPage />} />
-
-        {/* ===== Engagement Routes ===== */}
-        <Route path="/social-wall" element={<SocialWallPage />} />
-        <Route path="/activity" element={<ActivityPage />} />
-        <Route path="/ai-matches" element={<AIMatchesPage />} />
-        <Route path="/partners" element={<PartnersPage />} />
-        <Route path="/briefcase" element={<BriefcasePage />} />
-
-        {/* ===== Gamification & Learning Routes ===== */}
-        <Route path="/ratings" element={<RatingsPage />} />
-        <Route path="/analytics" element={<AnalyticsPage />} />
-        <Route path="/announcements" element={<AnnouncementsPage />} />
-        <Route path="/speakers" element={<SpeakersPage />} />
-        <Route path="/learning" element={<LearningPage />} />
-
-        {/* ===== Engagement Center & Admin ===== */}
-        <Route path="/engagement" element={<EngagementPage />} />
-        <Route path="/admin" element={<AdminDashboardPage />} />
-
-        {/* Catch-all Fallback - Modified to show the exact broken URL */}
-        <Route 
-          path="*" 
+        {/* Main Routes - Protected */}
+        <Route
+          path="/home"
           element={
-            <div className="p-10 mt-20 text-2xl font-bold text-red-600 text-center">
-              404 Error: The app tried to load "<span className="text-black">{window.location.pathname}</span>" but there is no Route matching that exact name in App.jsx.
-            </div>
-          } 
+            <PrivateRoute>
+              <HomeScreen />
+            </PrivateRoute>
+          }
         />
+        <Route
+          path="/sessions"
+          element={
+            <PrivateRoute>
+              <SessionsScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/hub"
+          element={
+            <PrivateRoute>
+              <HubScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/networking"
+          element={
+            <PrivateRoute>
+              <NetworkingScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <ProfileScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/picbot"
+          element={
+            <PrivateRoute>
+              <PicbotScreen />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Engagement Routes - Protected */}
+        <Route
+          path="/social-wall"
+          element={
+            <PrivateRoute>
+              <SocialWallScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/activity-hub"
+          element={
+            <PrivateRoute>
+              <ActivityHubScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/ai-matches"
+          element={
+            <PrivateRoute>
+              <AIMatchesScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/partners"
+          element={
+            <PrivateRoute>
+              <PartnersScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/briefcase"
+          element={
+            <PrivateRoute>
+              <BriefcaseScreen />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Gamification & Learning Routes - Protected */}
+        <Route
+          path="/ratings"
+          element={
+            <PrivateRoute>
+              <RatingsScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/analytics"
+          element={
+            <PrivateRoute>
+              <AnalyticsScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/announcements"
+          element={
+            <PrivateRoute>
+              <AnnouncementsScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/speakers"
+          element={
+            <PrivateRoute>
+              <SpeakersScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/learning-paths"
+          element={
+            <PrivateRoute>
+              <LearningPathsScreen />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Engagement Center & Admin - Protected */}
+        <Route
+          path="/engagement-center"
+          element={
+            <PrivateRoute>
+              <EngagementCenterScreen />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute adminOnly={true}>
+              <AdminDashboardScreen />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Fallback Route */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
-  );
+  )
 }
 
-export default App;
+export default App
