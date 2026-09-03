@@ -35,7 +35,7 @@ import BriefcasePage from './pages/BriefcasePage';
 
 // Gamification & Learning Pages (FIXED PATHS HERE)
 import RatingsPage from './pages/SessionReviewsPage';
-import AnalyticsPage from './Components/Analytics/AnalyticsPage';
+import AnalyticsPage from './Analytics/AnalyticsPage';
 import AnnouncementsPage from './pages/AnnouncementsPage';
 import SpeakersPage from './pages/SpeakersPage';
 import LearningPage from './pages/LearningPathsPage';
