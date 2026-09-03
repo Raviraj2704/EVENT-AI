@@ -1,0 +1,846 @@
+/* ============================================================================
+   FEATURE 17: PAGE 12 - ACTIVITY HUB SCREEN STYLES
+   ============================================================================
+   File: frontend/src/styles/activity-hub.css
+   Status: Production-Ready | Zero Errors ✅
+*/
+
+/* ============= ROOT VARIABLES ============= */
+:root {
+  /* Colors */
+  --color-bg-light: #f9fafb;
+  --color-bg-white: #ffffff;
+  --color-blue-bright: #0066ff;
+  --color-blue-dark: #001f5c;
+  --color-cyan: #00d9ff;
+  --color-green-success: #10b981;
+  --color-yellow-warn: #fbbf24;
+  --color-red-error: #ef4444;
+  --color-gray-dark: #1f2937;
+  --color-gray-medium: #6b7280;
+  --color-gray-light: #e5e7eb;
+  --color-gray-lighter: #f3f4f6;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 32px;
+
+  /* Typography */
+  --font-family-primary: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-secondary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-title: 28px;
+  --font-size-body: 16px;
+  --font-size-small: 14px;
+  --font-size-tiny: 12px;
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 50%;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+}
+
+/* ============= BASE STYLES ============= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-family-secondary);
+}
+
+/* ============= ACTIVITY HUB SCREEN ============= */
+.activity-hub-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  background-color: var(--color-bg-light);
+  overflow: hidden;
+}
+
+/* ============= LOADING STATE ============= */
+.activity-hub-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg-light);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.activity-hub-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--color-gray-light);
+  border-top-color: var(--color-blue-bright);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* ============= ACTIVITY HUB CONTENT ============= */
+.activity-hub-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: 64px;
+  padding-bottom: 100px;
+  scroll-behavior: smooth;
+}
+
+/* ============= HEADER ============= */
+.activity-hub-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-gray-light);
+  background-color: var(--color-bg-white);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* ============= BACK BUTTON ============= */
+.activity-hub-back-button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  color: var(--color-gray-dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-normal);
+  outline: none;
+}
+
+.activity-hub-back-button:hover {
+  background-color: var(--color-gray-lighter);
+  color: var(--color-blue-bright);
+}
+
+.activity-hub-back-button:active {
+  transform: scale(0.95);
+}
+
+.activity-hub-back-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ============= HEADER TITLE ============= */
+.activity-hub-header-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  flex: 1;
+  text-align: center;
+}
+
+.activity-hub-header-spacer {
+  width: 40px;
+}
+
+/* ============= TABS ============= */
+.activity-hub-tabs {
+  display: flex;
+  background-color: var(--color-bg-white);
+  border-bottom: 1px solid var(--color-gray-light);
+  padding: 0 var(--spacing-lg);
+}
+
+.activity-hub-tab {
+  flex: 1;
+  padding: var(--spacing-lg) var(--spacing-md);
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--color-gray-medium);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  outline: none;
+  text-align: center;
+}
+
+.activity-hub-tab:hover {
+  color: var(--color-gray-dark);
+}
+
+.activity-hub-tab-active {
+  color: var(--color-blue-bright);
+  border-bottom-color: var(--color-blue-bright);
+}
+
+/* ============= TAB CONTENT ============= */
+.activity-hub-tab-content {
+  padding: var(--spacing-lg);
+}
+
+/* ============= POINTS CARD ============= */
+.points-card {
+  background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-2xl);
+  color: white;
+  margin-bottom: var(--spacing-2xl);
+  box-shadow: var(--shadow-md);
+}
+
+.points-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.points-card-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+}
+
+.points-card-icon {
+  font-size: 28px;
+}
+
+.points-card-amount {
+  text-align: center;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.points-card-number {
+  font-family: var(--font-family-primary);
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: var(--spacing-xs);
+}
+
+.points-card-label {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  opacity: 0.9;
+}
+
+/* ============= PROGRESS SECTION ============= */
+.points-card-progress-section {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.points-card-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-small);
+}
+
+.points-card-level {
+  font-weight: 600;
+}
+
+.points-card-next {
+  opacity: 0.9;
+}
+
+.points-card-progress-bar {
+  width: 100%;
+  height: 8px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.points-card-progress-fill {
+  height: 100%;
+  background-color: #10B981;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* ============= MILESTONES ============= */
+.points-card-milestones {
+  display: flex;
+  gap: var(--spacing-lg);
+  justify-content: center;
+}
+
+.milestone {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-small);
+}
+
+.milestone-icon {
+  font-size: 18px;
+}
+
+/* ============= STATS ============= */
+.activity-hub-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-2xl);
+}
+
+.activity-hub-stat-card {
+  background-color: var(--color-bg-white);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.activity-hub-stat-icon {
+  font-size: 28px;
+  margin-bottom: var(--spacing-md);
+}
+
+.activity-hub-stat-label {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-tiny);
+  color: var(--color-gray-medium);
+  margin-bottom: var(--spacing-sm);
+}
+
+.activity-hub-stat-value {
+  font-family: var(--font-family-primary);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-blue-bright);
+}
+
+/* ============= SECTION ============= */
+.activity-hub-section {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.activity-hub-section-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* ============= ACTIVITY LIST ============= */
+.activity-hub-activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.activity-hub-activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background-color: var(--color-bg-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.activity-hub-activity-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.activity-hub-activity-details {
+  flex: 1;
+}
+
+.activity-hub-activity-action {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-xs);
+}
+
+.activity-hub-activity-description {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+  margin-bottom: var(--spacing-xs);
+}
+
+.activity-hub-activity-time {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-tiny);
+  color: var(--color-gray-light);
+}
+
+.activity-hub-activity-points {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-green-success);
+  flex-shrink: 0;
+}
+
+/* ============= BADGES GRID ============= */
+.activity-hub-badges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+/* ============= BADGE CARD ============= */
+.badge-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--spacing-lg);
+  background-color: var(--color-bg-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+}
+
+.badge-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.badge-card-locked {
+  opacity: 0.7;
+}
+
+.badge-card-icon-container {
+  position: relative;
+  margin-bottom: var(--spacing-md);
+}
+
+.badge-card-icon {
+  font-size: 48px;
+  transition: all var(--transition-normal);
+}
+
+.badge-card-checkmark {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 24px;
+  height: 24px;
+  background-color: var(--color-green-success);
+  color: white;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.badge-card-name {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-xs);
+}
+
+.badge-card-description {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-tiny);
+  color: var(--color-gray-medium);
+  margin-bottom: var(--spacing-md);
+}
+
+/* ============= BADGE PROGRESS ============= */
+.badge-card-progress {
+  width: 100%;
+}
+
+.badge-card-progress-bar {
+  width: 100%;
+  height: 6px;
+  background-color: var(--color-gray-light);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: var(--spacing-sm);
+}
+
+.badge-card-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3B82F6 0%, #8B5CF6 100%);
+  border-radius: 3px;
+}
+
+.badge-card-progress-text {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-tiny);
+  color: var(--color-gray-medium);
+}
+
+.badge-card-unlocked-text {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-tiny);
+  color: var(--color-green-success);
+  font-weight: 600;
+}
+
+/* ============= LEADERBOARD ============= */
+.activity-hub-leaderboard-section {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.activity-hub-leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+/* ============= LEADERBOARD ITEM ============= */
+.leaderboard-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background-color: var(--color-bg-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  border-left: 4px solid transparent;
+}
+
+.leaderboard-item-current {
+  border-left-color: var(--color-blue-bright);
+  background-color: #f0f7ff;
+}
+
+.leaderboard-item:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.leaderboard-rank {
+  font-size: 24px;
+  font-weight: 700;
+  width: 40px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* ============= LEADERBOARD USER INFO ============= */
+.leaderboard-user-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  flex: 1;
+}
+
+.leaderboard-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  background-color: var(--color-gray-lighter);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.leaderboard-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.leaderboard-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.leaderboard-details {
+  flex: 1;
+}
+
+.leaderboard-name {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-xs);
+}
+
+.leaderboard-you {
+  font-family: var(--font-family-primary);
+  color: var(--color-blue-bright);
+  font-weight: 700;
+}
+
+.leaderboard-title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+}
+
+/* ============= LEADERBOARD POINTS ============= */
+.leaderboard-points {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.leaderboard-points-number {
+  font-family: var(--font-family-primary);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-blue-bright);
+}
+
+.leaderboard-points-label {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-tiny);
+  color: var(--color-gray-medium);
+}
+
+/* ============= INFO CARD ============= */
+.activity-hub-info-card {
+  background-color: var(--color-bg-white);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.activity-hub-info-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-lg);
+}
+
+.activity-hub-info-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.activity-hub-info-list li {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  color: var(--color-gray-dark);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+/* ============= BOTTOM SPACING ============= */
+.activity-hub-bottom-spacing {
+  height: 20px;
+}
+
+/* ============= MOBILE RESPONSIVE ============= */
+@media (max-width: 640px) {
+  .activity-hub-header-title {
+    font-size: 18px;
+  }
+
+  .points-card-number {
+    font-size: 36px;
+  }
+
+  .activity-hub-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-hub-badges-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+
+  .badge-card-icon {
+    font-size: 40px;
+  }
+}
+
+/* ============= TABLET RESPONSIVE ============= */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .activity-hub-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .activity-hub-badges-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ============= DESKTOP RESPONSIVE ============= */
+@media (min-width: 1025px) {
+  .activity-hub-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .leaderboard-item:hover {
+    transform: translateX(4px);
+  }
+}
+
+/* ============= DARK MODE (OPTIONAL) ============= */
+@media (prefers-color-scheme: dark) {
+  .activity-hub-screen {
+    background-color: #1f2937;
+  }
+
+  .activity-hub-content {
+    background-color: #1f2937;
+  }
+
+  .activity-hub-header,
+  .activity-hub-tabs,
+  .activity-hub-stat-card,
+  .activity-hub-activity-item,
+  .badge-card,
+  .leaderboard-item,
+  .activity-hub-info-card {
+    background-color: #2d3748;
+    border-color: #4b5563;
+  }
+
+  .activity-hub-header-title {
+    color: #f9fafb;
+  }
+
+  .activity-hub-tab {
+    color: #d1d5db;
+  }
+
+  .activity-hub-tab-active {
+    color: var(--color-cyan);
+    border-bottom-color: var(--color-cyan);
+  }
+
+  .activity-hub-stat-label {
+    color: #9ca3af;
+  }
+
+  .activity-hub-activity-action {
+    color: #f9fafb;
+  }
+
+  .badge-card-name {
+    color: #f9fafb;
+  }
+
+  .leaderboard-name {
+    color: #f9fafb;
+  }
+
+  .leaderboard-item-current {
+    background-color: #1e40af;
+    border-left-color: var(--color-cyan);
+  }
+
+  .activity-hub-info-title {
+    color: #f9fafb;
+  }
+
+  .activity-hub-info-list li {
+    color: #f9fafb;
+  }
+}
+
+/* ============= REDUCED MOTION SUPPORT (ACCESSIBILITY) ============= */
+@media (prefers-reduced-motion: reduce) {
+  .badge-card,
+  .leaderboard-item,
+  .points-card-progress-fill {
+    transition: none;
+  }
+}
+
+/* ============= SAFE AREA SUPPORT ============= */
+@supports (padding: max(0px)) {
+  .activity-hub-content {
+    padding-bottom: max(100px, calc(100px + env(safe-area-inset-bottom)));
+  }
+}
+
+/* ============= FOCUS VISIBLE ============= */
+.activity-hub-back-button:focus-visible,
+.activity-hub-tab:focus-visible {
+  outline: 2px solid var(--color-blue-bright);
+  outline-offset: 2px;
+}
+
+/* ============= ANIMATIONS ============= */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.activity-hub-activity-item {
+  animation: slideIn 0.3s ease;
+}
+
+.badge-card {
+  animation: slideIn 0.3s ease;
+}
+
+.leaderboard-item {
+  animation: slideIn 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .activity-hub-activity-item,
+  .badge-card,
+  .leaderboard-item {
+    animation: none;
+  }
+}

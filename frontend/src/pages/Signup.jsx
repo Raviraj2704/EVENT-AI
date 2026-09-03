@@ -29,13 +29,30 @@ export default function Signup() {
     setError('');
 
     try {
-      const response = await axios.post(`${API_URL}/api/users/register`, formData);
+      // Split the single "name" field into first_name and last_name
+      const nameParts = formData.name.trim().split(' ');
+      const firstName = nameParts[0] || 'Unknown';
+      const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : 'User';
 
-      // Show success and redirect to login
+      // Create the exact payload the backend expects
+      const payload = {
+        email: formData.email,
+        password: formData.password,
+        first_name: firstName,
+        last_name: lastName,
+        company: formData.company,
+        job_title: formData.job_title
+      };
+
+      const response = await axios.post(`${API_URL}/auth/register`, payload);
+      
       alert('Signup successful! Please login.');
-      navigate('/login');
+      navigate('/auth/login'); // Redirecting to the correct login route
+      
     } catch (err) {
-      setError(err.response?.data?.detail || 'Signup failed');
+      console.error(err);
+      setError(err.response?.data?.detail || 'Signup failed. Please try again.');
+      alert('Error: ' + (err.response?.data?.detail || 'Signup failed'));
     } finally {
       setLoading(false);
     }
@@ -112,7 +129,7 @@ export default function Signup() {
 
         <p className="text-center text-gray-600 mt-4">
           Already have an account?{' '}
-          <a href="/login" className="text-blue-600 hover:underline">
+          <a href="/auth/login" className="text-blue-600 hover:underline">
             Login
           </a>
         </p>

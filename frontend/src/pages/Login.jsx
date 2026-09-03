@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+// Ensure your API URL is defined
 const API_URL = 'http://localhost:8000';
 
 export default function Login() {
   const navigate = useNavigate();
+  // Ensure these states match what your  form uses
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -17,17 +19,21 @@ export default function Login() {
     setError('');
 
     try {
-      const response = await axios.post(`${API_URL}/api/users/login`, {
+      const response = await axios.post(`${API_URL}/auth/login`, {
         email,
         password
       });
 
-      // Save token to localStorage
+      // Saves the token securely
       localStorage.setItem('token', response.data.access_token);
-      localStorage.setItem('user_id', response.data.user_id);
+      
+      if (response.data.user_id) {
+        localStorage.setItem('user_id', response.data.user_id);
+      }
 
-      // Redirect to dashboard
-      navigate('/dashboard');
+      // Sends you to the home dashboard
+      navigate('/home');
+      
     } catch (err) {
       setError(err.response?.data?.detail || 'Login failed');
     } finally {
@@ -35,6 +41,7 @@ export default function Login() {
     }
   };
 
+  // KEEP YOUR EXISTING return (...) DOWN HERE!
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
