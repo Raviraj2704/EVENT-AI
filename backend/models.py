@@ -65,13 +65,32 @@ class Connection(Base):
     __tablename__ = "connections"
 
     id = Column(Integer, primary_key=True, index=True)
-    sender_id = Column(Integer)
-    receiver_id = Column(Integer)
+    user_id = Column(Integer, nullable=True)
+    recipient_id = Column(Integer, nullable=True)
+    event_id = Column(Integer, nullable=True)
+    sender_id = Column(Integer, nullable=True)
+    receiver_id = Column(Integer, nullable=True)
     status = Column(String, default="pending")
+    custom_message = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
 
 class Conversation(Base):
     __tablename__ = "conversations"
 
     id = Column(Integer, primary_key=True, index=True)
-    user1_id = Column(Integer)
-    user2_id = Column(Integer)
+    user1_id = Column(Integer, nullable=True)
+    user2_id = Column(Integer, nullable=True)
+    last_message = Column(Text, nullable=True)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class Favorite(Base):
+    __tablename__ = "favorites"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, index=True)
+    event_id = Column(Integer, index=True)
+    favorite_id = Column(Integer, index=True)
+    session_id = Column(Integer, index=True, nullable=True)
+    is_pinned = Column(Integer, default=0)
+    note = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
