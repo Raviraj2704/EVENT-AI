@@ -41,11 +41,11 @@ import SpeakersScreen from './pages/gamification/SpeakersScreen'
 import LearningPathsScreen from './pages/gamification/LearningPathsScreen'
 
 // Pages - Engagement Center & Admin
-import EngagementCenterScreen from './pages/engagement-center/EngagementCenterScreen'
-import AdminDashboardScreen from './pages/admin/AdminDashboardScreen'
+import EngagementCenterScreen from './pages/EngagementCenterScreen'
+import AdminDashboardScreen from './pages/AdminDashboardPage'
 
 // Components
-import PrivateRoute from './components/auth/PrivateRoute'
+import PrivateRoute from './components/Auth/PrivateRoute'
 
 const App = () => {
   const { isAuthenticated, token, checkAuth } = useAuthStore()

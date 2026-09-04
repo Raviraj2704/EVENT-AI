@@ -24,12 +24,18 @@ const apiClient = axios.create({
 // Request interceptor - Add auth token
 apiClient.interceptors.request.use(
   (config) => {
-    const { token } = useAuthStore.getState()
-    
+    // 1. Try to get token from Zustand state
+    let { token } = useAuthStore.getState()
+
+    // 2. Fallback to localStorage if state is empty (prevents logout on refresh)
+    if (!token) {
+      token = localStorage.getItem('token') || localStorage.getItem('access_token')
+    }
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
-    
+
     return config
   },
   (error) => {
@@ -42,10 +48,15 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config
-    const { token, refreshToken, logout, setTokens } = useAuthStore.getState()
+    let { token, refreshToken, logout, setTokens } = useAuthStore.getState()
+
+    // Fallback for refresh token
+    if (!refreshToken) {
+      refreshToken = localStorage.getItem('refreshToken')
+    }
 
     // Handle 401 - Try to refresh token
-    if (error.response?.status === 401 && token && !originalRequest._retry) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
 
       try {
@@ -59,6 +70,8 @@ apiClient.interceptors.response.use(
 
         // Update tokens
         setTokens(access_token, refresh_token)
+        localStorage.setItem('access_token', access_token)
+        localStorage.setItem('refreshToken', refresh_token)
 
         // Retry original request with new token
         originalRequest.headers.Authorization = `Bearer ${access_token}`
@@ -66,6 +79,9 @@ apiClient.interceptors.response.use(
       } catch (refreshError) {
         // Refresh failed - logout user
         logout()
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('token')
+        localStorage.removeItem('refreshToken')
         toast.error('Session expired. Please login again.')
         window.location.href = '/auth/login'
         return Promise.reject(refreshError)
