@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import apiClient from '../config/apiClient';
 
 export const useAuthStore = create((set, get) => ({
-  // State
   user: null,
   token: localStorage.getItem('access_token') || null,
   refreshToken: localStorage.getItem('refresh_token') || null,
@@ -10,7 +9,6 @@ export const useAuthStore = create((set, get) => ({
   loading: false,
   error: null,
 
-  // Actions
   setUser: (user) => set({ user }),
   
   setTokens: (token, refreshToken) => {
@@ -22,12 +20,7 @@ export const useAuthStore = create((set, get) => ({
   register: async (name, email, password) => {
     set({ loading: true, error: null });
     try {
-      // Sends data to your Render backend
-      const response = await apiClient.post('/auth/register', { 
-        name, 
-        email, 
-        password 
-      });
+      const response = await apiClient.post('/auth/register', { name, email, password });
       set({ loading: false });
       return response.data;
     } catch (error) {
@@ -42,20 +35,21 @@ export const useAuthStore = create((set, get) => ({
   login: async (email, password) => {
     set({ loading: true, error: null });
     try {
-      // Backend expects JSON body with username_or_email and password
-      const response = await apiClient.post('/auth/login', {
-        username_or_email: email,
-        password: password
+      const formData = new URLSearchParams();
+      formData.append('username', email);
+      formData.append('password', password);
+
+      const response = await apiClient.post('/auth/login', formData, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       });
       
       const { access_token, refresh_token } = response.data;
       get().setTokens(access_token, refresh_token);
       set({ loading: false });
-      
       return response.data;
     } catch (error) {
       set({ 
-        error: error.response?.data?.detail || 'Login failed. Check your credentials.', 
+        error: error.response?.data?.detail || 'Login failed', 
         loading: false 
       });
       throw error;
