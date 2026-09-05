@@ -42,13 +42,10 @@ export const useAuthStore = create((set, get) => ({
   login: async (email, password) => {
     set({ loading: true, error: null });
     try {
-      // FastAPI expects Form Data for logins, not JSON
-      const formData = new URLSearchParams();
-      formData.append('username', email); // FastAPI uses 'username' for the email field
-      formData.append('password', password);
-
-      const response = await apiClient.post('/auth/login', formData, {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      // Backend expects JSON body with username_or_email and password
+      const response = await apiClient.post('/auth/login', {
+        username_or_email: email,
+        password: password
       });
       
       const { access_token, refresh_token } = response.data;
