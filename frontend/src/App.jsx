@@ -15,6 +15,7 @@ import { useAuthStore } from './store/authStore'
 // Pages - Auth
 import SplashScreen from './pages/SplashScreen'
 import LoginScreen from './pages/LoginScreen'
+import RegisterScreen from './pages/RegisterScreen' 
 import VerifyEmailScreen from './pages/VerifyEmailScreen'
 import CompleteProfileScreen from './pages/CompleteProfileScreen'
 
@@ -73,6 +74,7 @@ const App = () => {
         {/* Auth Routes */}
         <Route path="/" element={<SplashScreen />} />
         <Route path="/auth/login" element={<LoginScreen />} />
+        <Route path="/auth/register" element={<RegisterScreen />} />
         <Route path="/auth/verify-email" element={<VerifyEmailScreen />} />
         <Route path="/auth/complete-profile" element={<CompleteProfileScreen />} />
 
