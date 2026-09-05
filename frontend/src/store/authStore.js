@@ -17,6 +17,12 @@ export const useAuthStore = create((set, get) => ({
     set({ token, refreshToken, isAuthenticated: !!token });
   },
 
+  // Add this checkAuth function to prevent the crash
+  checkAuth: () => {
+    const token = localStorage.getItem('access_token');
+    set({ isAuthenticated: !!token, token });
+  },
+
   register: async (name, email, password) => {
     set({ loading: true, error: null });
     try {
