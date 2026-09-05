@@ -1,12 +1,5 @@
-// ============================================================================
-// Authentication Store (Zustand)
-// ============================================================================
-// File: src/store/authStore.js
-// Purpose: Global authentication state management
-// Status: Production-Ready ✅
-
-import { create } from 'zustand'
-import apiClient from '../config/apiClient'
+import { create } from 'zustand';
+import apiClient from '../config/apiClient';
 
 export const useAuthStore = create((set, get) => ({
   // State
@@ -19,152 +12,62 @@ export const useAuthStore = create((set, get) => ({
 
   // Actions
   setUser: (user) => set({ user }),
-
+  
   setTokens: (token, refreshToken) => {
-    localStorage.setItem('access_token', token)
-    localStorage.setItem('refresh_token', refreshToken)
-    set({
-      token,
-      refreshToken,
-      isAuthenticated: true
-    })
+    if (token) localStorage.setItem('access_token', token);
+    if (refreshToken) localStorage.setItem('refresh_token', refreshToken);
+    set({ token, refreshToken, isAuthenticated: !!token });
+  },
+
+  register: async (name, email, password) => {
+    set({ loading: true, error: null });
+    try {
+      // Sends data to your Render backend
+      const response = await apiClient.post('/auth/register', { 
+        name, 
+        email, 
+        password 
+      });
+      set({ loading: false });
+      return response.data;
+    } catch (error) {
+      set({ 
+        error: error.response?.data?.detail || 'Registration failed', 
+        loading: false 
+      });
+      throw error;
+    }
+  },
+
+  login: async (email, password) => {
+    set({ loading: true, error: null });
+    try {
+      // FastAPI expects Form Data for logins, not JSON
+      const formData = new URLSearchParams();
+      formData.append('username', email); // FastAPI uses 'username' for the email field
+      formData.append('password', password);
+
+      const response = await apiClient.post('/auth/login', formData, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      });
+      
+      const { access_token, refresh_token } = response.data;
+      get().setTokens(access_token, refresh_token);
+      set({ loading: false });
+      
+      return response.data;
+    } catch (error) {
+      set({ 
+        error: error.response?.data?.detail || 'Login failed. Check your credentials.', 
+        loading: false 
+      });
+      throw error;
+    }
   },
 
   logout: () => {
-    localStorage.removeItem('access_token')
-    localStorage.removeItem('refresh_token')
-    set({
-      user: null,
-      token: null,
-      refreshToken: null,
-      isAuthenticated: false
-    })
-  },
-
-  login: async (usernameOrEmail, password) => {
-    set({ loading: true, error: null })
-    try {
-      const response = await apiClient.post('/auth/login', {
-        username_or_email: usernameOrEmail,
-        password
-      })
-
-      const { access_token, refresh_token, user } = response.data
-
-      set({
-        user,
-        token: access_token,
-        refreshToken: refresh_token,
-        isAuthenticated: true,
-        loading: false
-      })
-
-      localStorage.setItem('access_token', access_token)
-      localStorage.setItem('refresh_token', refresh_token)
-
-      return { success: true, user }
-    } catch (error) {
-      const errorMsg = error.response?.data?.message || 'Login failed'
-      set({
-        error: errorMsg,
-        loading: false
-      })
-      return { success: false, error: errorMsg }
-    }
-  },
-
-  register: async (username, email, password, firstName, lastName) => {
-    set({ loading: true, error: null })
-    try {
-      const response = await apiClient.post('/auth/register', {
-        username,
-        email,
-        password,
-        first_name: firstName,
-        last_name: lastName
-      })
-
-      const { access_token, refresh_token } = response.data
-
-      set({
-        token: access_token,
-        refreshToken: refresh_token,
-        isAuthenticated: true,
-        loading: false
-      })
-
-      localStorage.setItem('access_token', access_token)
-      localStorage.setItem('refresh_token', refresh_token)
-
-      return { success: true }
-    } catch (error) {
-      const errorMsg = error.response?.data?.message || 'Registration failed'
-      set({
-        error: errorMsg,
-        loading: false
-      })
-      return { success: false, error: errorMsg }
-    }
-  },
-
-  verifyEmail: async (email, verificationCode) => {
-    set({ loading: true, error: null })
-    try {
-      await apiClient.post('/auth/verify-email', {
-        email,
-        verification_code: verificationCode
-      })
-
-      set({ loading: false })
-      return { success: true }
-    } catch (error) {
-      const errorMsg = error.response?.data?.message || 'Verification failed'
-      set({
-        error: errorMsg,
-        loading: false
-      })
-      return { success: false, error: errorMsg }
-    }
-  },
-
-  checkAuth: async () => {
-    const { token, isAuthenticated } = get()
-
-    if (!isAuthenticated || !token) {
-      set({ isAuthenticated: false })
-      return
-    }
-
-    set({ loading: true })
-    try {
-      const response = await apiClient.get('/users/me')
-      set({
-        user: response.data,
-        loading: false
-      })
-    } catch (error) {
-      console.error('Auth check failed:', error)
-      get().logout()
-      set({ loading: false })
-    }
-  },
-
-  updateProfile: async (profileData) => {
-    set({ loading: true, error: null })
-    try {
-      const response = await apiClient.put('/users/me', profileData)
-      set({
-        user: response.data.user,
-        loading: false
-      })
-      return { success: true, user: response.data.user }
-    } catch (error) {
-      const errorMsg = error.response?.data?.message || 'Profile update failed'
-      set({
-        error: errorMsg,
-        loading: false
-      })
-      return { success: false, error: errorMsg }
-    }
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+    set({ user: null, token: null, refreshToken: null, isAuthenticated: false });
   }
-}))
+}));
