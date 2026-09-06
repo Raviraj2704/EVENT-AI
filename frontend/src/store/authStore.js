@@ -10,14 +10,13 @@ export const useAuthStore = create((set, get) => ({
   error: null,
 
   setUser: (user) => set({ user }),
-  
+
   setTokens: (token, refreshToken) => {
     if (token) localStorage.setItem('access_token', token);
     if (refreshToken) localStorage.setItem('refresh_token', refreshToken);
     set({ token, refreshToken, isAuthenticated: !!token });
   },
 
-  // Add this checkAuth function to prevent the crash
   checkAuth: () => {
     const token = localStorage.getItem('access_token');
     set({ isAuthenticated: !!token, token });
@@ -26,12 +25,10 @@ export const useAuthStore = create((set, get) => ({
   register: async (name, email, password) => {
     set({ loading: true, error: null });
     try {
-      // If your backend expects 'username' instead of 'name', send:
-      // { username: name, email, password }
-      const response = await apiClient.post('/auth/register', {
-        name,
-        email,
-        password,
+      const response = await apiClient.post('/auth/register', { 
+        username: name,  
+        email: email, 
+        password: password 
       });
       set({ loading: false });
       return response.data;
@@ -40,7 +37,6 @@ export const useAuthStore = create((set, get) => ({
       let errorMessage = 'Registration failed';
 
       if (Array.isArray(detail) && detail.length > 0) {
-        // Formats: "username: Field required" or similar
         errorMessage = detail
           .map((err) => `${err.loc?.slice(-1)[0] || 'field'}: ${err.msg}`)
           .join(', ');
@@ -63,7 +59,7 @@ export const useAuthStore = create((set, get) => ({
       const response = await apiClient.post('/auth/login', formData, {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       });
-      
+
       const { access_token, refresh_token } = response.data;
       get().setTokens(access_token, refresh_token);
       set({ loading: false });
