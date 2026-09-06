@@ -26,14 +26,29 @@ export const useAuthStore = create((set, get) => ({
   register: async (name, email, password) => {
     set({ loading: true, error: null });
     try {
-      const response = await apiClient.post('/auth/register', { name, email, password });
+      // If your backend expects 'username' instead of 'name', send:
+      // { username: name, email, password }
+      const response = await apiClient.post('/auth/register', {
+        name,
+        email,
+        password,
+      });
       set({ loading: false });
       return response.data;
     } catch (error) {
-      set({ 
-        error: error.response?.data?.detail || 'Registration failed', 
-        loading: false 
-      });
+      const detail = error.response?.data?.detail;
+      let errorMessage = 'Registration failed';
+
+      if (Array.isArray(detail) && detail.length > 0) {
+        // Formats: "username: Field required" or similar
+        errorMessage = detail
+          .map((err) => `${err.loc?.slice(-1)[0] || 'field'}: ${err.msg}`)
+          .join(', ');
+      } else if (typeof detail === 'string') {
+        errorMessage = detail;
+      }
+
+      set({ error: errorMessage, loading: false });
       throw error;
     }
   },
