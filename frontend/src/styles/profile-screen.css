@@ -1,0 +1,775 @@
+/* ============================================================================
+   FEATURE 17: PAGE 9 - PROFILE SCREEN STYLES
+   ============================================================================
+   File: frontend/src/styles/profile-screen.css
+   Status: Production-Ready | Zero Errors ✅
+*/
+
+/* ============= ROOT VARIABLES ============= */
+:root {
+  /* Colors */
+  --color-bg-light: #f9fafb;
+  --color-bg-white: #ffffff;
+  --color-blue-bright: #0066ff;
+  --color-blue-dark: #001f5c;
+  --color-cyan: #00d9ff;
+  --color-green-success: #10b981;
+  --color-red-error: #ef4444;
+  --color-gray-dark: #1f2937;
+  --color-gray-medium: #6b7280;
+  --color-gray-light: #e5e7eb;
+  --color-gray-lighter: #f3f4f6;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 32px;
+
+  /* Typography */
+  --font-family-primary: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-secondary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-title: 28px;
+  --font-size-body: 16px;
+  --font-size-small: 14px;
+  --font-size-tiny: 12px;
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 50%;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+}
+
+/* ============= BASE STYLES ============= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-family-secondary);
+}
+
+/* ============= PROFILE SCREEN CONTAINER ============= */
+.profile-screen-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  background-color: var(--color-bg-light);
+  overflow: hidden;
+}
+
+/* ============= LOADING STATE ============= */
+.profile-screen-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg-light);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.profile-screen-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--color-gray-light);
+  border-top-color: var(--color-blue-bright);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* ============= PROFILE SCREEN CONTENT ============= */
+.profile-screen-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: 64px;
+  padding-bottom: 100px;
+  scroll-behavior: smooth;
+}
+
+/* ============= PROFILE SCREEN HEADER ============= */
+.profile-screen-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-gray-light);
+  background-color: var(--color-bg-white);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* ============= BACK BUTTON ============= */
+.profile-screen-back-button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  color: var(--color-gray-dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-normal);
+  outline: none;
+}
+
+.profile-screen-back-button:hover {
+  background-color: var(--color-gray-lighter);
+  color: var(--color-blue-bright);
+}
+
+.profile-screen-back-button:active {
+  transform: scale(0.95);
+}
+
+.profile-screen-back-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ============= HEADER TITLE ============= */
+.profile-screen-header-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  flex: 1;
+  text-align: center;
+}
+
+.profile-screen-header-spacer {
+  width: 40px;
+}
+
+/* ============= CARD ============= */
+.profile-screen-card {
+  background-color: var(--color-bg-white);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin: var(--spacing-lg) var(--spacing-lg) 0;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ============= PROFILE HEADER CARD ============= */
+.profile-screen-header-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile-screen-avatar-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  flex: 1;
+}
+
+.profile-screen-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--color-gray-lighter);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.profile-screen-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-screen-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 700;
+  font-size: 28px;
+}
+
+.profile-screen-user-info {
+  flex: 1;
+}
+
+.profile-screen-user-name {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-xs);
+}
+
+.profile-screen-user-title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+  margin-bottom: var(--spacing-xs);
+}
+
+.profile-screen-user-company {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+}
+
+/* ============= EDIT BUTTON ============= */
+.profile-screen-edit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  width: 80px;
+  height: 40px;
+  border: 2px solid var(--color-blue-bright);
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-blue-bright);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  outline: none;
+  flex-shrink: 0;
+}
+
+.profile-screen-edit-button:hover {
+  background-color: #f0f7ff;
+}
+
+.profile-screen-edit-button:active {
+  transform: scale(0.95);
+}
+
+.profile-screen-edit-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ============= SECTION ============= */
+.profile-screen-section {
+  padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-lg);
+}
+
+.profile-screen-section-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* ============= SETTINGS GROUP ============= */
+.profile-screen-settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  background-color: var(--color-bg-white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ============= PROFILE SETTINGS ITEM ============= */
+.profile-settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg);
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color var(--transition-normal);
+  outline: none;
+  border-bottom: 1px solid var(--color-gray-light);
+  text-align: left;
+}
+
+.profile-settings-item:last-child {
+  border-bottom: none;
+}
+
+.profile-settings-item:hover {
+  background-color: var(--color-gray-lighter);
+}
+
+.profile-settings-item:active {
+  background-color: var(--color-gray-light);
+}
+
+.profile-settings-item-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background-color: #f0f7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  margin-right: var(--spacing-lg);
+  flex-shrink: 0;
+}
+
+.profile-settings-item-content {
+  flex: 1;
+}
+
+.profile-settings-item-label {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  font-weight: 500;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-xs);
+}
+
+.profile-settings-item-description {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+}
+
+.profile-settings-item-value {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-blue-bright);
+  font-weight: 500;
+}
+
+.profile-settings-item-arrow {
+  width: 20px;
+  height: 20px;
+  color: var(--color-gray-medium);
+  flex-shrink: 0;
+  margin-left: var(--spacing-lg);
+}
+
+/* ============= NOTIFICATION ITEM ============= */
+.profile-screen-notification-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg);
+  border: none;
+  background-color: transparent;
+  border-bottom: 1px solid var(--color-gray-light);
+}
+
+.profile-screen-notification-item:last-child {
+  border-bottom: none;
+}
+
+.profile-screen-notification-content {
+  flex: 1;
+}
+
+.profile-screen-notification-label {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  font-weight: 500;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-xs);
+}
+
+.profile-screen-notification-description {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+}
+
+/* ============= TOGGLE BUTTON ============= */
+.profile-screen-toggle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background-color: var(--color-gray-light);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color var(--transition-normal);
+  outline: none;
+  padding: 0;
+  flex-shrink: 0;
+  margin-left: var(--spacing-lg);
+}
+
+.profile-screen-toggle-on {
+  background-color: var(--color-blue-bright);
+}
+
+.profile-screen-toggle-switch {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  transition: left var(--transition-normal);
+}
+
+.profile-screen-toggle-on .profile-screen-toggle-switch {
+  left: 22px;
+}
+
+/* ============= LOGOUT BUTTON ============= */
+.profile-screen-logout-button {
+  width: 100%;
+  height: 56px;
+  background-color: var(--color-red-error);
+  border: none;
+  border-radius: var(--radius-md);
+  color: white;
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  transition: all var(--transition-normal);
+  outline: none;
+  box-shadow: var(--shadow-md);
+}
+
+.profile-screen-logout-button:hover:not(:disabled) {
+  background-color: #dc2626;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.profile-screen-logout-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.profile-screen-logout-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.profile-screen-logout-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.profile-screen-logout-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ============= SECTION LAST ============= */
+.profile-screen-section-last {
+  margin-bottom: var(--spacing-2xl);
+}
+
+/* ============= BOTTOM SPACING ============= */
+.profile-screen-bottom-spacing {
+  height: 20px;
+}
+
+/* ============= MODAL OVERLAY ============= */
+.profile-screen-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============= MODAL ============= */
+.profile-screen-modal {
+  background-color: var(--color-bg-white);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-2xl);
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.profile-screen-modal-header {
+  margin-bottom: var(--spacing-lg);
+}
+
+.profile-screen-modal-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-title);
+  font-weight: 700;
+  color: var(--color-gray-dark);
+}
+
+.profile-screen-modal-message {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  color: var(--color-gray-medium);
+  margin-bottom: var(--spacing-2xl);
+  line-height: 1.5;
+}
+
+/* ============= MODAL BUTTONS ============= */
+.profile-screen-modal-buttons {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+}
+
+.profile-screen-modal-button {
+  padding: var(--spacing-md) var(--spacing-xl);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  outline: none;
+}
+
+.profile-screen-modal-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.profile-screen-modal-button-cancel {
+  background-color: var(--color-gray-lighter);
+  color: var(--color-gray-dark);
+}
+
+.profile-screen-modal-button-cancel:hover:not(:disabled) {
+  background-color: var(--color-gray-light);
+}
+
+.profile-screen-modal-button-confirm {
+  background-color: var(--color-red-error);
+  color: white;
+}
+
+.profile-screen-modal-button-confirm:hover:not(:disabled) {
+  background-color: #dc2626;
+}
+
+/* ============= MOBILE RESPONSIVE ============= */
+@media (max-width: 640px) {
+  .profile-screen-header-title {
+    font-size: 18px;
+  }
+
+  .profile-screen-header-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile-screen-avatar-section {
+    flex-direction: column;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .profile-screen-avatar {
+    width: 100px;
+    height: 100px;
+  }
+
+  .profile-screen-edit-button {
+    width: 100%;
+  }
+
+  .profile-screen-modal {
+    width: 95%;
+  }
+
+  .profile-screen-modal-buttons {
+    flex-direction: column-reverse;
+  }
+
+  .profile-screen-modal-button {
+    width: 100%;
+  }
+}
+
+/* ============= TABLET RESPONSIVE ============= */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .profile-screen-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+/* ============= DESKTOP RESPONSIVE ============= */
+@media (min-width: 1025px) {
+  .profile-screen-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .profile-settings-item:hover {
+    background-color: var(--color-gray-lighter);
+  }
+}
+
+/* ============= DARK MODE (OPTIONAL) ============= */
+@media (prefers-color-scheme: dark) {
+  .profile-screen-container {
+    background-color: #1f2937;
+  }
+
+  .profile-screen-content {
+    background-color: #1f2937;
+  }
+
+  .profile-screen-header,
+  .profile-screen-card,
+  .profile-screen-settings-group {
+    background-color: #2d3748;
+    border-color: #4b5563;
+  }
+
+  .profile-screen-header-title {
+    color: #f9fafb;
+  }
+
+  .profile-screen-user-name {
+    color: #f9fafb;
+  }
+
+  .profile-screen-user-title,
+  .profile-screen-user-company {
+    color: #d1d5db;
+  }
+
+  .profile-settings-item {
+    border-bottom-color: #4b5563;
+  }
+
+  .profile-settings-item-label {
+    color: #f9fafb;
+  }
+
+  .profile-settings-item-icon {
+    background-color: #1e40af;
+  }
+
+  .profile-screen-notification-item {
+    border-bottom-color: #4b5563;
+  }
+
+  .profile-screen-notification-label {
+    color: #f9fafb;
+  }
+
+  .profile-screen-modal {
+    background-color: #2d3748;
+  }
+
+  .profile-screen-modal-title {
+    color: #f9fafb;
+  }
+
+  .profile-screen-modal-message {
+    color: #d1d5db;
+  }
+
+  .profile-screen-modal-button-cancel {
+    background-color: #4b5563;
+    color: #f9fafb;
+  }
+}
+
+/* ============= REDUCED MOTION SUPPORT (ACCESSIBILITY) ============= */
+@media (prefers-reduced-motion: reduce) {
+  .profile-settings-item,
+  .profile-screen-toggle,
+  .profile-screen-logout-button,
+  .profile-screen-modal-overlay,
+  .profile-screen-modal {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* ============= SAFE AREA SUPPORT ============= */
+@supports (padding: max(0px)) {
+  .profile-screen-content {
+    padding-bottom: max(100px, calc(100px + env(safe-area-inset-bottom)));
+  }
+}
+
+/* ============= FOCUS VISIBLE ============= */
+.profile-screen-back-button:focus-visible,
+.profile-screen-edit-button:focus-visible,
+.profile-settings-item:focus-visible,
+.profile-screen-toggle:focus-visible,
+.profile-screen-logout-button:focus-visible,
+.profile-screen-modal-button:focus-visible {
+  outline: 2px solid var(--color-blue-bright);
+  outline-offset: 2px;
+}

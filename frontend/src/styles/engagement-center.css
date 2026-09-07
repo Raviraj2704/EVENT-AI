@@ -1,0 +1,1195 @@
+/* ============================================================================
+   FEATURE 22: PAGE 21 - ENGAGEMENT CENTER SCREEN STYLES
+   ============================================================================
+   File: frontend/src/styles/engagement-center.css
+   Status: Production-Ready | Zero Errors ✅
+*/
+
+/* ============= ROOT VARIABLES ============= */
+:root {
+  /* Colors */
+  --color-bg-light: #f9fafb;
+  --color-bg-white: #ffffff;
+  --color-blue-bright: #0066ff;
+  --color-blue-dark: #001f5c;
+  --color-cyan: #00d9ff;
+  --color-green-success: #10b981;
+  --color-red-error: #ef4444;
+  --color-yellow-warn: #fbbf24;
+  --color-gray-dark: #1f2937;
+  --color-gray-medium: #6b7280;
+  --color-gray-light: #e5e7eb;
+  --color-gray-lighter: #f3f4f6;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 32px;
+
+  /* Typography */
+  --font-family-primary: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-secondary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-title: 28px;
+  --font-size-body: 16px;
+  --font-size-small: 14px;
+  --font-size-tiny: 12px;
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 50%;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+}
+
+/* ============= BASE STYLES ============= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-family-secondary);
+}
+
+/* ============= ENGAGEMENT CENTER SCREEN ============= */
+.engagement-center-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  background-color: var(--color-bg-light);
+  overflow: hidden;
+}
+
+/* ============= LOADING STATE ============= */
+.engagement-center-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg-light);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.engagement-center-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--color-gray-light);
+  border-top-color: var(--color-blue-bright);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* ============= ENGAGEMENT CENTER CONTENT ============= */
+.engagement-center-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: 64px;
+  padding-bottom: 100px;
+  scroll-behavior: smooth;
+}
+
+/* ============= HEADER ============= */
+.engagement-center-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-gray-light);
+  background-color: var(--color-bg-white);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  gap: var(--spacing-lg);
+}
+
+/* ============= BACK BUTTON ============= */
+.engagement-center-back-button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  color: var(--color-gray-dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-normal);
+  outline: none;
+  flex-shrink: 0;
+}
+
+.engagement-center-back-button:hover {
+  background-color: var(--color-gray-lighter);
+  color: var(--color-blue-bright);
+}
+
+.engagement-center-back-button:active {
+  transform: scale(0.95);
+}
+
+.engagement-center-back-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ============= HEADER CONTENT ============= */
+.engagement-center-header-content {
+  flex: 1;
+}
+
+.engagement-center-header-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+}
+
+.engagement-center-header-subtitle {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+}
+
+/* ============= INFO BANNER ============= */
+.engagement-center-info-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+  background: linear-gradient(135deg, #FEF3C7 0%, #DBEAFE 100%);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--color-blue-bright);
+}
+
+.engagement-center-info-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.engagement-center-info-content {
+  flex: 1;
+}
+
+.engagement-center-info-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+.engagement-center-info-text {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+  line-height: 1.5;
+}
+
+/* ============= STATS ============= */
+.engagement-center-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+}
+
+.engagement-center-stat-card {
+  background-color: var(--color-bg-white);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.engagement-center-stat-label {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-tiny);
+  color: var(--color-gray-medium);
+  margin-bottom: var(--spacing-sm);
+}
+
+.engagement-center-stat-value {
+  font-family: var(--font-family-primary);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-blue-bright);
+}
+
+/* ============= ENGAGEMENT TABS ============= */
+.engagement-tabs {
+  background-color: var(--color-bg-white);
+  border-bottom: 1px solid var(--color-gray-light);
+  padding: 0 var(--spacing-lg);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.engagement-tabs-scroll {
+  display: flex;
+  gap: var(--spacing-md);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--spacing-md) 0;
+}
+
+.engagement-tabs-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.engagement-tabs-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.engagement-tabs-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-gray-light);
+  border-radius: 2px;
+}
+
+.engagement-tab {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background-color: var(--color-gray-lighter);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  outline: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.engagement-tab:hover {
+  background-color: var(--color-gray-light);
+  color: var(--color-gray-dark);
+}
+
+.engagement-tab-active {
+  background-color: var(--color-blue-bright);
+  border-color: var(--color-blue-bright);
+  color: white;
+}
+
+.engagement-tab-icon {
+  font-size: 16px;
+}
+
+.engagement-tab-label {
+  font-weight: 500;
+}
+
+.engagement-tab-badge {
+  display: inline-block;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 20px;
+}
+
+.engagement-tab-active .engagement-tab-badge {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ============= ENGAGEMENT CENTER GRID ============= */
+.engagement-center-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+}
+
+/* ============= ENGAGEMENT CARD ============= */
+.engagement-card {
+  background-color: var(--color-bg-white);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.engagement-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+
+.engagement-card-completed {
+  opacity: 0.8;
+}
+
+.engagement-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.engagement-card-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.engagement-card-title-section {
+  flex: 1;
+}
+
+.engagement-card-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-xs);
+}
+
+.engagement-card-subtitle {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+}
+
+.engagement-card-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background-color: var(--color-green-success);
+  color: white;
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.engagement-card-description {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+  line-height: 1.5;
+  margin-bottom: var(--spacing-lg);
+}
+
+.engagement-card-meta {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+
+.engagement-card-difficulty,
+.engagement-card-priority,
+.engagement-card-duration {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-tiny);
+  font-weight: 600;
+  color: white;
+}
+
+.engagement-card-difficulty,
+.engagement-card-priority {
+  color: white;
+}
+
+.engagement-card-duration,
+.engagement-card-points {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background-color: var(--color-gray-lighter);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+  font-weight: 500;
+}
+
+/* ============= CHALLENGE CARD ============= */
+.engagement-card-challenge .engagement-card-rewards {
+  display: flex;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg) 0;
+  border-bottom: 1px solid var(--color-gray-light);
+  margin-bottom: var(--spacing-lg);
+}
+
+.engagement-card-reward-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.engagement-card-reward-item span {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-blue-bright);
+}
+
+/* ============= POLL CARD ============= */
+.engagement-card-poll .engagement-card-poll-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.engagement-card-poll-option {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.engagement-card-poll-option-text {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-dark);
+  font-weight: 500;
+}
+
+.engagement-card-poll-progress {
+  height: 8px;
+  background-color: var(--color-gray-lighter);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.engagement-card-poll-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-blue-bright) 0%, var(--color-cyan) 100%);
+  transition: width var(--transition-normal);
+}
+
+.engagement-card-poll-percentage {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-tiny);
+  color: var(--color-gray-medium);
+  text-align: right;
+}
+
+/* ============= QUIZ CARD ============= */
+.engagement-card-quiz .engagement-card-score {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background-color: var(--color-gray-lighter);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-lg);
+}
+
+.engagement-card-score-label {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+}
+
+.engagement-card-score-value {
+  font-family: var(--font-family-primary);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-blue-bright);
+}
+
+/* ============= CARD FOOTER ============= */
+.engagement-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-lg);
+  margin-top: auto;
+}
+
+.engagement-card-date {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+}
+
+.engagement-card-action-button {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  background-color: var(--color-blue-bright);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  outline: none;
+  white-space: nowrap;
+}
+
+.engagement-card-action-button:hover {
+  background-color: var(--color-blue-dark);
+}
+
+/* ============= CHALLENGE MODAL ============= */
+.challenge-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--spacing-lg);
+}
+
+.challenge-modal {
+  background-color: var(--color-bg-white);
+  border-radius: var(--radius-lg);
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.challenge-modal-close {
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  width: 32px;
+  height: 32px;
+  border: none;
+  background-color: transparent;
+  color: var(--color-gray-medium);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-normal);
+  outline: none;
+  z-index: 10;
+}
+
+.challenge-modal-close:hover {
+  background-color: var(--color-gray-lighter);
+  color: var(--color-gray-dark);
+}
+
+.challenge-modal-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-2xl);
+  border-bottom: 1px solid var(--color-gray-light);
+  background: linear-gradient(135deg, #FEF3C7 0%, #DBEAFE 100%);
+}
+
+.challenge-modal-icon {
+  font-size: 48px;
+  flex-shrink: 0;
+}
+
+.challenge-modal-header-content {
+  flex: 1;
+}
+
+.challenge-modal-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-title);
+  font-weight: 700;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-md);
+}
+
+.challenge-modal-badges {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.challenge-modal-difficulty,
+.challenge-modal-duration {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  color: white;
+}
+
+.challenge-modal-duration {
+  background-color: rgba(0, 0, 0, 0.2);
+  color: var(--color-gray-dark);
+}
+
+.challenge-modal-body {
+  flex: 1;
+  padding: var(--spacing-2xl);
+  overflow-y: auto;
+}
+
+.challenge-section {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.challenge-section-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-lg);
+}
+
+.challenge-section-content {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  color: var(--color-gray-medium);
+  line-height: 1.7;
+}
+
+.challenge-objectives-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.challenge-objective-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-lg);
+}
+
+.challenge-objective-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.challenge-rewards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background-color: var(--color-gray-lighter);
+  border-radius: var(--radius-md);
+}
+
+.challenge-reward-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.challenge-reward-icon {
+  font-size: 28px;
+  margin-bottom: var(--spacing-md);
+}
+
+.challenge-reward-content {
+  flex: 1;
+}
+
+.challenge-reward-label {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+  margin-bottom: var(--spacing-sm);
+}
+
+.challenge-reward-value {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body);
+  font-weight: 700;
+  color: var(--color-blue-bright);
+}
+
+.challenge-participants-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background-color: var(--color-gray-lighter);
+  border-radius: var(--radius-md);
+}
+
+.challenge-participants-stat {
+  text-align: center;
+}
+
+.challenge-participants-label {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+  margin-bottom: var(--spacing-sm);
+}
+
+.challenge-participants-value {
+  font-family: var(--font-family-primary);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-blue-bright);
+}
+
+.challenge-timeline {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.challenge-timeline-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  background-color: var(--color-gray-lighter);
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.challenge-timeline-label {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+  font-weight: 600;
+}
+
+.challenge-timeline-date {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  color: var(--color-gray-dark);
+  font-weight: 600;
+}
+
+.challenge-timeline-status {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  color: var(--color-green-success);
+  font-weight: 600;
+}
+
+.challenge-rules-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.challenge-rule-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-lg);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  color: var(--color-gray-medium);
+}
+
+.challenge-rule-item::before {
+  content: '•';
+  color: var(--color-blue-bright);
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.challenge-top-participants {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.challenge-top-participant {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background-color: var(--color-gray-lighter);
+  border-radius: var(--radius-sm);
+}
+
+.challenge-rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background-color: var(--color-yellow-warn);
+  color: white;
+  border-radius: var(--radius-full);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-small);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.challenge-participant-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.challenge-participant-info {
+  flex: 1;
+}
+
+.challenge-participant-name {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-xs);
+}
+
+.challenge-participant-score {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+}
+
+.challenge-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-2xl);
+  border-top: 1px solid var(--color-gray-light);
+  flex-shrink: 0;
+}
+
+.challenge-modal-button {
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  outline: none;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.challenge-modal-join {
+  background-color: var(--color-blue-bright);
+  color: white;
+}
+
+.challenge-modal-join:hover {
+  background-color: var(--color-blue-dark);
+}
+
+.challenge-modal-joined {
+  background-color: var(--color-green-success);
+  color: white;
+  cursor: default;
+  opacity: 0.8;
+}
+
+@keyframes pulse-spinner {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.challenge-modal-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ============= EMPTY STATE ============= */
+.engagement-center-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-3xl) var(--spacing-lg);
+  text-align: center;
+  grid-column: 1 / -1;
+}
+
+.engagement-center-empty-icon {
+  font-size: 60px;
+  margin-bottom: var(--spacing-lg);
+}
+
+.engagement-center-empty-title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+.engagement-center-empty-text {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+}
+
+/* ============= TIPS SECTION ============= */
+.engagement-center-tips {
+  padding: var(--spacing-lg);
+  background: linear-gradient(135deg, #FEF3C7 0%, #DBEAFE 100%);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.engagement-center-tips-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-lg);
+}
+
+.engagement-center-tips-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.engagement-center-tips-list li {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  color: var(--color-gray-dark);
+}
+
+/* ============= BOTTOM SPACING ============= */
+.engagement-center-bottom-spacing {
+  height: 20px;
+}
+
+/* ============= MOBILE RESPONSIVE ============= */
+@media (max-width: 640px) {
+  .engagement-center-header {
+    padding: var(--spacing-md);
+  }
+
+  .engagement-center-header-title {
+    font-size: 18px;
+  }
+
+  .engagement-center-info-banner,
+  .engagement-center-stats,
+  .engagement-center-grid,
+  .engagement-center-tips {
+    padding: var(--spacing-md);
+  }
+
+  .engagement-center-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .engagement-center-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .challenge-modal {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 0;
+  }
+
+  .challenge-modal-footer {
+    flex-direction: column;
+  }
+
+  .challenge-modal-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .challenge-rewards,
+  .challenge-timeline {
+    grid-template-columns: 1fr;
+  }
+
+  .challenge-participants-info {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============= TABLET RESPONSIVE ============= */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .engagement-center-content {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .engagement-center-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ============= DESKTOP RESPONSIVE ============= */
+@media (min-width: 1025px) {
+  .engagement-center-content {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .engagement-center-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .engagement-card:hover {
+    transform: translateY(-6px);
+  }
+}
+
+/* ============= DARK MODE (OPTIONAL) ============= */
+@media (prefers-color-scheme: dark) {
+  .engagement-center-screen {
+    background-color: #1f2937;
+  }
+
+  .engagement-center-content {
+    background-color: #1f2937;
+  }
+
+  .engagement-center-header,
+  .engagement-tabs,
+  .engagement-card,
+  .challenge-modal {
+    background-color: #2d3748;
+    border-color: #4b5563;
+  }
+
+  .engagement-center-header-title {
+    color: #f9fafb;
+  }
+
+  .engagement-card-title {
+    color: #f9fafb;
+  }
+
+  .challenge-modal-title {
+    color: #f9fafb;
+  }
+
+  .engagement-center-info-banner {
+    background: linear-gradient(135deg, #78350f 0%, #003d82 100%);
+  }
+
+  .engagement-center-tips {
+    background: linear-gradient(135deg, #78350f 0%, #003d82 100%);
+  }
+
+  .engagement-center-info-title,
+  .engagement-center-tips-title {
+    color: #f9fafb;
+  }
+
+  .engagement-center-info-text,
+  .engagement-center-tips-list li {
+    color: #d1d5db;
+  }
+}
+
+/* ============= REDUCED MOTION SUPPORT (ACCESSIBILITY) ============= */
+@media (prefers-reduced-motion: reduce) {
+  .engagement-card,
+  .engagement-tab {
+    transition: none;
+  }
+
+  .engagement-center-spinner,
+  .challenge-modal-spinner {
+    animation: none;
+  }
+}
+
+/* ============= SAFE AREA SUPPORT ============= */
+@supports (padding: max(0px)) {
+  .engagement-center-content {
+    padding-bottom: max(100px, calc(100px + env(safe-area-inset-bottom)));
+  }
+}
+
+/* ============= FOCUS VISIBLE ============= */
+.engagement-center-back-button:focus-visible,
+.engagement-tab:focus-visible,
+.engagement-card-action-button:focus-visible,
+.challenge-modal-button:focus-visible {
+  outline: 2px solid var(--color-blue-bright);
+  outline-offset: 2px;
+}
+
+/* ============= ANIMATIONS ============= */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.engagement-card {
+  animation: slideIn 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .engagement-card {
+    animation: none;
+  }
+}

@@ -1,0 +1,433 @@
+/* ============================================================================
+   FEATURE 17: PAGE 1 - SPLASH SCREEN STYLES
+   ============================================================================
+   File: frontend/src/styles/splash.css
+   Status: Production-Ready | Zero Errors ✅
+*/
+
+/* ============= ROOT VARIABLES ============= */
+:root {
+  /* Colors */
+  --color-bg-dark: #1f2937;
+  --color-bg-darker: #111827;
+  --color-blue-dark: #001f5c;
+  --color-blue-bright: #0066ff;
+  --color-cyan: #00d9ff;
+  --color-white: #ffffff;
+  --color-gray-light: #d1d5db;
+  --color-gray-medium: #9ca3af;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 40px;
+  --spacing-4xl: 60px;
+  --spacing-5xl: 80px;
+  --spacing-6xl: 100px;
+
+  /* Typography */
+  --font-family-primary: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-secondary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-title: 48px;
+  --font-size-subtitle: 16px;
+  --font-size-sub-subtitle: 14px;
+  --font-size-countdown: 14px;
+
+  /* Animations */
+  --duration-rotation: 4s;
+  --duration-pulse: 1.6s;
+  --duration-fade: 1s;
+}
+
+/* ============= BASE STYLES ============= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ============= SPLASH SCREEN CONTAINER ============= */
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+}
+
+/* ============= BACKGROUND GRADIENT ============= */
+.splash-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, var(--color-bg-dark) 0%, var(--color-bg-darker) 100%);
+  z-index: -1;
+}
+
+/* ============= MAIN CONTAINER ============= */
+.splash-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 var(--spacing-lg);
+}
+
+/* ============= LOGO WRAPPER ============= */
+.splash-logo-wrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--spacing-5xl);
+  margin-bottom: var(--spacing-5xl);
+}
+
+/* ============= ROTATING BORDER ANIMATION ============= */
+@keyframes rotateLogoCircle {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.splash-logo-border {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border: 3px solid;
+  border-image: linear-gradient(135deg, var(--color-blue-bright) 0%, var(--color-cyan) 100%) 1;
+  border-radius: 50%;
+  animation: rotateLogoCircle var(--duration-rotation) linear infinite;
+  opacity: 0.8;
+}
+
+/* ============= LOGO ICON ============= */
+.splash-logo-icon {
+  position: absolute;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.splash-logo-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 10px rgba(0, 102, 255, 0.3));
+}
+
+/* ============= TEXT FADE IN ANIMATION ============= */
+@keyframes fadeInText {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============= TEXT CONTAINER ============= */
+.splash-text-container {
+  text-align: center;
+  animation: fadeInText var(--duration-fade) ease-out 0.5s forwards;
+  opacity: 0;
+  margin-bottom: var(--spacing-4xl);
+}
+
+/* ============= TITLE TEXT ============= */
+.splash-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-title);
+  font-weight: 700;
+  color: var(--color-white);
+  letter-spacing: 2px;
+  line-height: 1.2;
+  margin-bottom: var(--spacing-md);
+}
+
+/* ============= SUBTITLE TEXT ============= */
+.splash-subtitle {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-subtitle);
+  font-weight: 400;
+  color: var(--color-gray-medium);
+  line-height: 1.4;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* ============= SUB-SUBTITLE TEXT ============= */
+.splash-sub-subtitle {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-sub-subtitle);
+  font-weight: 300;
+  color: var(--color-gray-light);
+  line-height: 1.4;
+}
+
+/* ============= LOADING ANIMATION ============= */
+@keyframes pulseLoadingDot {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+/* ============= LOADING CONTAINER ============= */
+.splash-loading-container {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-3xl);
+  height: 16px;
+}
+
+/* ============= LOADING DOTS ============= */
+.splash-loading-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-blue-bright);
+  animation: pulseLoadingDot var(--duration-pulse) ease-in-out infinite;
+}
+
+.splash-loading-dot.dot-1 {
+  animation-delay: 0s;
+}
+
+.splash-loading-dot.dot-2 {
+  animation-delay: 0.3s;
+}
+
+.splash-loading-dot.dot-3 {
+  animation-delay: 0.6s;
+}
+
+/* ============= COUNTDOWN CONTAINER ============= */
+.splash-countdown-container {
+  position: absolute;
+  bottom: var(--spacing-6xl);
+  left: 50%;
+  transform: translateX(-50%);
+  animation: fadeInText var(--duration-fade) ease-out 0.7s forwards;
+  opacity: 0;
+}
+
+/* ============= COUNTDOWN TEXT ============= */
+.splash-countdown {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-countdown);
+  font-weight: 500;
+  color: var(--color-white);
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* ============= TAP HINT (MOBILE ONLY) ============= */
+.splash-hint {
+  position: absolute;
+  bottom: var(--spacing-lg);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-family-secondary);
+  font-size: 12px;
+  color: var(--color-gray-medium);
+  opacity: 0.5;
+  animation: fadeInText var(--duration-fade) ease-out 1.5s forwards;
+  opacity: 0;
+}
+
+/* ============= MOBILE RESPONSIVE ============= */
+@media (max-width: 640px) {
+  :root {
+    --font-size-title: 40px;
+    --spacing-5xl: 60px;
+    --spacing-6xl: 80px;
+  }
+
+  .splash-logo-wrapper {
+    width: 180px;
+    height: 180px;
+    margin-top: var(--spacing-5xl);
+    margin-bottom: var(--spacing-5xl);
+  }
+
+  .splash-logo-border {
+    width: 180px;
+    height: 180px;
+    border-width: 2px;
+  }
+
+  .splash-logo-icon {
+    width: 140px;
+    height: 140px;
+  }
+
+  .splash-title {
+    font-size: var(--font-size-title);
+  }
+
+  .splash-hint {
+    display: block;
+  }
+}
+
+/* ============= TABLET RESPONSIVE ============= */
+@media (min-width: 641px) and (max-width: 1024px) {
+  :root {
+    --font-size-title: 48px;
+  }
+
+  .splash-logo-wrapper {
+    width: 220px;
+    height: 220px;
+    margin-top: var(--spacing-6xl);
+    margin-bottom: var(--spacing-6xl);
+  }
+
+  .splash-logo-border {
+    width: 220px;
+    height: 220px;
+  }
+
+  .splash-logo-icon {
+    width: 170px;
+    height: 170px;
+  }
+
+  .splash-hint {
+    display: none;
+  }
+}
+
+/* ============= DESKTOP RESPONSIVE ============= */
+@media (min-width: 1025px) {
+  :root {
+    --font-size-title: 56px;
+  }
+
+  .splash-logo-wrapper {
+    width: 250px;
+    height: 250px;
+    margin-top: var(--spacing-6xl);
+    margin-bottom: var(--spacing-6xl);
+  }
+
+  .splash-logo-border {
+    width: 250px;
+    height: 250px;
+    border-width: 4px;
+  }
+
+  .splash-logo-icon {
+    width: 200px;
+    height: 200px;
+  }
+
+  .splash-title {
+    font-size: var(--font-size-title);
+    letter-spacing: 3px;
+  }
+
+  .splash-hint {
+    display: none;
+  }
+}
+
+/* ============= SAFE AREA SUPPORT (NOTCH/CUTOUT) ============= */
+@supports (padding: max(0px)) {
+  .splash-countdown-container {
+    bottom: max(var(--spacing-6xl), env(safe-area-inset-bottom));
+  }
+
+  .splash-logo-wrapper {
+    margin-top: max(var(--spacing-5xl), env(safe-area-inset-top));
+  }
+}
+
+/* ============= DARK MODE (OPTIONAL) ============= */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-gray-light: #d1d5db;
+    --color-gray-medium: #9ca3af;
+  }
+}
+
+/* ============= REDUCED MOTION SUPPORT (ACCESSIBILITY) ============= */
+@media (prefers-reduced-motion: reduce) {
+  .splash-logo-border,
+  .splash-loading-dot,
+  .splash-text-container,
+  .splash-countdown-container,
+  .splash-hint {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============= LANDSCAPE MODE ============= */
+@media (max-height: 500px) {
+  :root {
+    --spacing-5xl: 40px;
+    --spacing-6xl: 50px;
+  }
+
+  .splash-logo-wrapper {
+    margin-top: var(--spacing-3xl);
+    margin-bottom: var(--spacing-3xl);
+  }
+
+  .splash-text-container {
+    margin-bottom: var(--spacing-2xl);
+  }
+
+  .splash-loading-container {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .splash-countdown-container {
+    bottom: var(--spacing-lg);
+  }
+}

@@ -1,2 +1,17 @@
+<<<<<<< HEAD
 
 .env
+=======
+node_modules/
+__pycache__/
+.env
+.DS_Store
+venv/
+*.pyc
+.vscode/
+.idea/
+dist/
+build/
+*.sqlite3
+.pytest_cache/
+>>>>>>> 5c7fcf06789504177dec1f11d7c8a4c6250414ba
