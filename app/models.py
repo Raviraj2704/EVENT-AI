@@ -525,7 +525,7 @@ class Rating(Base):
     __tablename__ = "ratings"
 
     resource_id = Column(Integer, ForeignKey("resources.id"), index=True) 
-    learning_path_id = Column(Integer, ForeignKey("learning_paths.id"), nullable=True)   
+    learning_path = relationship("LearningPath", back_populates="ratings")   
     
     # Primary Key
     id = Column(Integer, primary_key=True, index=True)
