@@ -506,60 +506,181 @@ class SessionAttendance(Base):
 
 class Rating(Base):
     """
-    User ratings for sessions, speakers, and other content
-    
+    User ratings for sessions, speakers, resources, events,
+    experiences, partners and learning paths.
+
     Attributes:
         id: Unique rating identifier
         user_id: User who rated
-        rating_type: session/speaker/event/experience/partner
-        target_id: ID of rated item (polymorphic)
+        rating_type: session/speaker/resource/event/experience/partner
+        target_id: ID of rated item
         score: Rating value (1-5)
         feedback: Optional feedback text
         is_anonymous: Anonymous rating flag
         helpful_count: Upvotes on this rating
-        session_id: Session reference (if rating session)
-        resource_id: Resource reference (if rating resource)
-        learning_path_id: Learning path reference (if rating learning path)
+        session_id: Session reference
+        resource_id: Resource reference
+        learning_path_id: Learning path reference
         created_at: Rating timestamp
         updated_at: Last update timestamp
     """
+
     __tablename__ = "ratings"
 
+    # ------------------------------------------------------------------------
     # Primary Key
-    id = Column(Integer, primary_key=True, index=True)
+    # ------------------------------------------------------------------------
 
-    # Foreign Keys
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
-    session_id = Column(Integer, ForeignKey("sessions.id"), index=True)
-    resource_id = Column(Integer, ForeignKey("resources.id"), index=True)
-    learning_path_id = Column(Integer, ForeignKey("learning_paths.id"), nullable=True)
-    
-    # Rating Info
-    rating_type = Column(SQLEnum(RatingType), nullable=False)
-    target_id = Column(Integer, nullable=False)  # Polymorphic reference
-    score = Column(Integer, nullable=False)  # 1-5
-    feedback = Column(Text)
-    is_anonymous = Column(Boolean, default=False)
-    helpful_count = Column(Integer, default=0)
-    
-    # Timestamps
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    
-    # Relationships
-    user = relationship("User", back_populates="ratings")
-    session = relationship("Session", back_populates="ratings", foreign_keys=[session_id])
-    resource = relationship("Resource", back_populates="ratings", foreign_keys=[resource_id])
-    learning_path = relationship("LearningPath", back_populates="ratings", foreign_keys=[learning_path_id])
-    
-    # Indexes
-    __table_args__ = (
-        Index('idx_rating_type_target', 'rating_type', 'target_id'),
-        Index('idx_rating_user', 'user_id'),
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
     )
-    
+
+    # ------------------------------------------------------------------------
+    # Foreign Keys
+    # ------------------------------------------------------------------------
+
+    user_id = Column(
+        Integer,
+        ForeignKey("users.id"),
+        nullable=False,
+        index=True
+    )
+
+    session_id = Column(
+        Integer,
+        ForeignKey("sessions.id"),
+        nullable=True,
+        index=True
+    )
+
+    resource_id = Column(
+        Integer,
+        ForeignKey("resources.id"),
+        nullable=True,
+        index=True
+    )
+
+    learning_path_id = Column(
+        Integer,
+        ForeignKey("learning_paths.id"),
+        nullable=True,
+        index=True
+    )
+
+    # ------------------------------------------------------------------------
+    # Rating Information
+    # ------------------------------------------------------------------------
+
+    rating_type = Column(
+        SQLEnum(RatingType),
+        nullable=False,
+        index=True
+    )
+
+    target_id = Column(
+        Integer,
+        nullable=False,
+        index=True
+    )
+
+    score = Column(
+        Integer,
+        nullable=False
+    )
+
+    feedback = Column(Text)
+
+    is_anonymous = Column(
+        Boolean,
+        default=False
+    )
+
+    helpful_count = Column(
+        Integer,
+        default=0
+    )
+
+    # ------------------------------------------------------------------------
+    # Timestamps
+    # ------------------------------------------------------------------------
+
+    created_at = Column(
+        DateTime,
+        default=datetime.utcnow,
+        index=True
+    )
+
+    updated_at = Column(
+        DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
+    )
+
+    # ------------------------------------------------------------------------
+    # Relationships
+    # ------------------------------------------------------------------------
+
+    user = relationship(
+        "User",
+        back_populates="ratings"
+    )
+
+    session = relationship(
+        "Session",
+        back_populates="ratings",
+        foreign_keys=[session_id]
+    )
+
+    resource = relationship(
+        "Resource",
+        back_populates="ratings",
+        foreign_keys=[resource_id]
+    )
+
+    learning_path = relationship(
+        "LearningPath",
+        back_populates="ratings",
+        foreign_keys=[learning_path_id]
+    )
+
+    # ------------------------------------------------------------------------
+    # Indexes
+    # ------------------------------------------------------------------------
+
+    __table_args__ = (
+        Index(
+            "idx_rating_type_target",
+            "rating_type",
+            "target_id"
+        ),
+        Index(
+            "idx_rating_user",
+            "user_id"
+        ),
+        Index(
+            "idx_rating_session",
+            "session_id"
+        ),
+        Index(
+            "idx_rating_resource",
+            "resource_id"
+        ),
+        Index(
+            "idx_rating_learning_path",
+            "learning_path_id"
+        ),
+    )
+
     def __repr__(self):
-        return f"<Rating(id={self.id}, user_id={self.user_id}, score={self.score})>"
+        return (
+            f"<Rating("
+            f"id={self.id}, "
+            f"user_id={self.user_id}, "
+            f"score={self.score}"
+            f")>"
+        )
     
 # ============================================================================
 # TABLE 7: Resources
