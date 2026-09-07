@@ -519,15 +519,12 @@ class Rating(Base):
         helpful_count: Upvotes on this rating
         session_id: Session reference (if rating session)
         resource_id: Resource reference (if rating resource)
+        learning_path_id: Learning path reference (if rating learning path)
         created_at: Rating timestamp
         updated_at: Last update timestamp
     """
     __tablename__ = "ratings"
 
-    resource_id = Column(Integer, ForeignKey("resources.id"), index=True)
-    learning_path_id = Column(Integer, ForeignKey("learning_paths.id"), nullable=True)
-    learning_path = relationship("LearningPath", back_populates="ratings")
-    
     # Primary Key
     id = Column(Integer, primary_key=True, index=True)
 
@@ -553,6 +550,7 @@ class Rating(Base):
     user = relationship("User", back_populates="ratings")
     session = relationship("Session", back_populates="ratings", foreign_keys=[session_id])
     resource = relationship("Resource", back_populates="ratings", foreign_keys=[resource_id])
+    learning_path = relationship("LearningPath", back_populates="ratings", foreign_keys=[learning_path_id])
     
     # Indexes
     __table_args__ = (
@@ -562,7 +560,7 @@ class Rating(Base):
     
     def __repr__(self):
         return f"<Rating(id={self.id}, user_id={self.user_id}, score={self.score})>"
-
+    
 # ============================================================================
 # TABLE 7: Resources
 # ============================================================================
