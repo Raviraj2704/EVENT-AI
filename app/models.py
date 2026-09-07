@@ -530,10 +530,12 @@ class Rating(Base):
     
     # Primary Key
     id = Column(Integer, primary_key=True, index=True)
-    
+
     # Foreign Keys
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
     session_id = Column(Integer, ForeignKey("sessions.id"), index=True)
+    resource_id = Column(Integer, ForeignKey("resources.id"), index=True)
+    learning_path_id = Column(Integer, ForeignKey("learning_paths.id"), nullable=True)
     
     # Rating Info
     rating_type = Column(SQLEnum(RatingType), nullable=False)
