@@ -1223,11 +1223,6 @@ class LearningPath(Base):
         back_populates="learning_path",
         cascade="all, delete-orphan"
     )
-    ratings = relationship(
-        "Rating",
-        back_populates="learning_path",
-        cascade="all, delete-orphan"
-    )
     
     # Indexes
     __table_args__ = (
