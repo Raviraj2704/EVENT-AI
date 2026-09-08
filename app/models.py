@@ -533,7 +533,7 @@ class Rating(Base):
     user = relationship("User", back_populates="ratings")
     session = relationship("Session", back_populates="ratings", foreign_keys=[session_id])
     resource = relationship("Resource", back_populates="ratings", foreign_keys=[resource_id])
-    learning_path = relationship("LearningPath", back_populates="ratings", foreign_keys=[learning_path_id])
+    learning_path = relationship("LearningPath", back_populates="ratings")
     
     # Indexes
     __table_args__ = (
@@ -1226,8 +1226,7 @@ class LearningPath(Base):
     ratings = relationship(
         "Rating",
         back_populates="learning_path",
-        cascade="all, delete-orphan",
-        foreign_keys="Rating.learning_path_id"
+        cascade="all, delete-orphan"
     )
     
     # Indexes
@@ -1239,8 +1238,7 @@ class LearningPath(Base):
     
     def __repr__(self):
         return f"<LearningPath(id={self.id}, title={self.title})>"
-
-
+    
 # ============================================================================
 # TABLE 18: LearningModules
 # ============================================================================
