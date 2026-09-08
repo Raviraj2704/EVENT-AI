@@ -639,11 +639,11 @@ class Rating(Base):
         foreign_keys=[resource_id]
     )
 
-    learning_path = relationship(
-        "LearningPath",
-        back_populates="ratings",
-        foreign_keys=[learning_path_id]
-    )
+    #learning_path = relationship(
+     #   "LearningPath",
+      #  back_populates="ratings",
+       # foreign_keys=[learning_path_id]
+    #)
 
     # ------------------------------------------------------------------------
     # Indexes
