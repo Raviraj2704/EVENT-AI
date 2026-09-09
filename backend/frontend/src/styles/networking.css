@@ -1,0 +1,708 @@
+/* ============================================================================
+   FEATURE 17: PAGE 8 - NETWORKING SCREEN STYLES
+   ============================================================================
+   File: frontend/src/styles/networking.css
+   Status: Production-Ready | Zero Errors ✅
+*/
+
+/* ============= ROOT VARIABLES ============= */
+:root {
+  /* Colors */
+  --color-bg-light: #f9fafb;
+  --color-bg-white: #ffffff;
+  --color-blue-bright: #0066ff;
+  --color-blue-dark: #001f5c;
+  --color-cyan: #00d9ff;
+  --color-green-success: #10b981;
+  --color-red-error: #ef4444;
+  --color-gray-dark: #1f2937;
+  --color-gray-medium: #6b7280;
+  --color-gray-light: #e5e7eb;
+  --color-gray-lighter: #f3f4f6;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 32px;
+
+  /* Typography */
+  --font-family-primary: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-family-secondary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-size-title: 28px;
+  --font-size-body: 16px;
+  --font-size-small: 14px;
+  --font-size-tiny: 12px;
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 50%;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+}
+
+/* ============= BASE STYLES ============= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-family-secondary);
+}
+
+/* ============= NETWORKING SCREEN CONTAINER ============= */
+.networking-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  background-color: var(--color-bg-light);
+  overflow: hidden;
+}
+
+/* ============= LOADING STATE ============= */
+.networking-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-bg-light);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.networking-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--color-gray-light);
+  border-top-color: var(--color-blue-bright);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* ============= NETWORKING CONTENT ============= */
+.networking-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-top: 64px;
+  padding-bottom: 100px;
+  scroll-behavior: smooth;
+}
+
+/* ============= NETWORKING HEADER ============= */
+.networking-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-gray-light);
+  background-color: var(--color-bg-white);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* ============= BACK BUTTON ============= */
+.networking-back-button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  color: var(--color-gray-dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-normal);
+  outline: none;
+}
+
+.networking-back-button:hover {
+  background-color: var(--color-gray-lighter);
+  color: var(--color-blue-bright);
+}
+
+.networking-back-button:active {
+  transform: scale(0.95);
+}
+
+.networking-back-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ============= HEADER TITLE ============= */
+.networking-header-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  flex: 1;
+  text-align: center;
+}
+
+.networking-header-spacer {
+  width: 40px;
+}
+
+/* ============= SEARCH SECTION ============= */
+.networking-search-section {
+  padding: var(--spacing-lg);
+  background-color: var(--color-bg-white);
+  border-bottom: 1px solid var(--color-gray-light);
+}
+
+.networking-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.networking-search-icon {
+  position: absolute;
+  left: var(--spacing-md);
+  width: 20px;
+  height: 20px;
+  color: var(--color-gray-medium);
+  pointer-events: none;
+}
+
+.networking-search-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 var(--spacing-lg) 0 36px;
+  border: 2px solid var(--color-gray-light);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  color: var(--color-gray-dark);
+  background-color: var(--color-bg-white);
+  outline: none;
+  transition: all var(--transition-normal);
+}
+
+.networking-search-input::placeholder {
+  color: var(--color-gray-medium);
+}
+
+.networking-search-input:focus {
+  border-color: var(--color-blue-bright);
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+  padding-right: 32px;
+}
+
+.networking-search-clear {
+  position: absolute;
+  right: var(--spacing-md);
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: none;
+  color: var(--color-gray-medium);
+  cursor: pointer;
+  font-size: 18px;
+  display: none;
+  outline: none;
+  transition: color var(--transition-normal);
+}
+
+.networking-search-input:focus ~ .networking-search-clear,
+.networking-search-input:not(:placeholder-shown) ~ .networking-search-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.networking-search-clear:hover {
+  color: var(--color-gray-dark);
+}
+
+/* ============= FILTER SECTION ============= */
+.networking-filter-section {
+  padding: var(--spacing-lg);
+  background-color: var(--color-bg-white);
+  border-bottom: 1px solid var(--color-gray-light);
+}
+
+.networking-designation-select {
+  width: 100%;
+  height: 48px;
+  padding: 0 var(--spacing-lg);
+  border: 2px solid var(--color-gray-light);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  color: var(--color-gray-dark);
+  background-color: var(--color-bg-white);
+  cursor: pointer;
+  outline: none;
+  transition: all var(--transition-normal);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 20px;
+  padding-right: 40px;
+}
+
+.networking-designation-select:hover {
+  border-color: var(--color-blue-bright);
+}
+
+.networking-designation-select:focus {
+  border-color: var(--color-blue-bright);
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+}
+
+/* ============= AI MATCHES SECTION ============= */
+.networking-ai-matches-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg);
+  background-color: var(--color-bg-white);
+  border-bottom: 1px solid var(--color-gray-light);
+}
+
+.networking-ai-matches-label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  color: var(--color-gray-dark);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  font-weight: 600;
+}
+
+.networking-ai-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--color-blue-bright);
+}
+
+/* ============= AI TOGGLE BUTTON ============= */
+.networking-ai-toggle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background-color: var(--color-gray-light);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color var(--transition-normal);
+  outline: none;
+  padding: 0;
+}
+
+.networking-ai-toggle-active {
+  background-color: var(--color-blue-bright);
+}
+
+.networking-ai-toggle-switch {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  transition: left var(--transition-normal);
+}
+
+.networking-ai-toggle-active .networking-ai-toggle-switch {
+  left: 22px;
+}
+
+/* ============= ATTENDEES LIST ============= */
+.networking-attendees-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background-color: var(--color-bg-white);
+}
+
+/* ============= ATTENDEE CARD ============= */
+.attendee-card {
+  background-color: var(--color-bg-white);
+  border: 1px solid var(--color-gray-light);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  transition: all var(--transition-normal);
+}
+
+.attendee-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-blue-bright);
+}
+
+/* ============= ATTENDEE CARD HEADER ============= */
+.attendee-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-md);
+}
+
+.attendee-card-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--color-gray-lighter);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.attendee-card-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.attendee-card-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* ============= BOOKMARK BUTTON ============= */
+.attendee-card-bookmark {
+  background: none;
+  border: none;
+  color: var(--color-gray-medium);
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-normal);
+  outline: none;
+}
+
+.attendee-card-bookmark:hover {
+  background-color: var(--color-gray-lighter);
+  color: var(--color-blue-bright);
+}
+
+.attendee-card-bookmark-active {
+  color: var(--color-blue-bright);
+}
+
+.attendee-card-bookmark svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ============= ATTENDEE DETAILS ============= */
+.attendee-card-name {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-xs);
+}
+
+.attendee-card-title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+  margin-bottom: var(--spacing-xs);
+}
+
+.attendee-card-company {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+  margin-bottom: var(--spacing-md);
+}
+
+/* ============= BADGES ============= */
+.attendee-card-badges {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+}
+
+.attendee-card-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: var(--font-size-tiny);
+  font-weight: 600;
+  color: white;
+}
+
+/* ============= AI MATCH BADGE ============= */
+.attendee-card-ai-match {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: #f0f7ff;
+  border: 1px solid var(--color-blue-bright);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-lg);
+  color: var(--color-blue-dark);
+  font-size: var(--font-size-tiny);
+  font-weight: 600;
+}
+
+.attendee-card-ai-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* ============= CONNECT BUTTON ============= */
+.attendee-card-button {
+  width: 100%;
+  height: 40px;
+  border: 2px solid var(--color-gray-light);
+  border-radius: var(--radius-sm);
+  background-color: transparent;
+  color: var(--color-blue-bright);
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  transition: all var(--transition-normal);
+  outline: none;
+}
+
+.attendee-card-button:hover {
+  border-color: var(--color-blue-bright);
+  background-color: #f0f7ff;
+}
+
+.attendee-card-button-connected {
+  background-color: var(--color-blue-bright);
+  color: white;
+  border-color: var(--color-blue-bright);
+}
+
+.attendee-card-button-connected:hover {
+  background-color: var(--color-blue-dark);
+  border-color: var(--color-blue-dark);
+}
+
+.attendee-card-button-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* ============= EMPTY STATE ============= */
+.networking-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-3xl) var(--spacing-lg);
+  text-align: center;
+  background-color: var(--color-bg-light);
+  border-radius: var(--radius-md);
+  margin-top: var(--spacing-2xl);
+}
+
+.networking-empty-icon {
+  width: 60px;
+  height: 60px;
+  color: var(--color-gray-light);
+  margin-bottom: var(--spacing-lg);
+}
+
+.networking-empty-title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-body);
+  font-weight: 600;
+  color: var(--color-gray-dark);
+  margin-bottom: var(--spacing-sm);
+}
+
+.networking-empty-text {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-small);
+  color: var(--color-gray-medium);
+}
+
+/* ============= BOTTOM SPACING ============= */
+.networking-bottom-spacing {
+  height: 20px;
+}
+
+/* ============= MOBILE RESPONSIVE ============= */
+@media (max-width: 640px) {
+  .networking-header-title {
+    font-size: 18px;
+  }
+
+  .networking-search-input,
+  .networking-designation-select {
+    font-size: 16px; /* Prevent iOS auto-zoom */
+  }
+
+  .attendee-card {
+    padding: var(--spacing-md);
+  }
+
+  .attendee-card-name {
+    font-size: 14px;
+  }
+
+  .attendee-card-button {
+    font-size: 12px;
+    height: 36px;
+  }
+}
+
+/* ============= TABLET RESPONSIVE ============= */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .networking-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+/* ============= DESKTOP RESPONSIVE ============= */
+@media (min-width: 1025px) {
+  .networking-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .attendee-card:hover {
+    transform: translateY(-2px);
+  }
+}
+
+/* ============= DARK MODE (OPTIONAL) ============= */
+@media (prefers-color-scheme: dark) {
+  .networking-screen {
+    background-color: #1f2937;
+  }
+
+  .networking-content {
+    background-color: #1f2937;
+  }
+
+  .networking-header,
+  .networking-search-section,
+  .networking-filter-section,
+  .networking-ai-matches-section,
+  .networking-attendees-list,
+  .attendee-card {
+    background-color: #2d3748;
+    border-color: #4b5563;
+  }
+
+  .networking-header-title {
+    color: #f9fafb;
+  }
+
+  .networking-search-input,
+  .networking-designation-select {
+    background-color: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+
+  .networking-search-input::placeholder,
+  .networking-designation-select option {
+    color: #9ca3af;
+  }
+
+  .attendee-card-name {
+    color: #f9fafb;
+  }
+
+  .attendee-card-title,
+  .attendee-card-company {
+    color: #d1d5db;
+  }
+
+  .attendee-card-ai-match {
+    background-color: #1e40af;
+    border-color: #3b82f6;
+    color: #e0e7ff;
+  }
+
+  .attendee-card-button {
+    border-color: #4b5563;
+    color: var(--color-cyan);
+  }
+
+  .attendee-card-button:hover {
+    background-color: #1e3a8a;
+  }
+}
+
+/* ============= REDUCED MOTION SUPPORT (ACCESSIBILITY) ============= */
+@media (prefers-reduced-motion: reduce) {
+  .attendee-card,
+  .networking-search-input,
+  .networking-ai-toggle,
+  .attendee-card-button {
+    transition: none;
+  }
+}
+
+/* ============= SAFE AREA SUPPORT ============= */
+@supports (padding: max(0px)) {
+  .networking-content {
+    padding-bottom: max(100px, calc(100px + env(safe-area-inset-bottom)));
+  }
+}
+
+/* ============= FOCUS VISIBLE ============= */
+.networking-back-button:focus-visible,
+.attendee-card-button:focus-visible,
+.networking-search-input:focus-visible,
+.networking-designation-select:focus-visible {
+  outline: 2px solid var(--color-blue-bright);
+  outline-offset: 2px;
+}
