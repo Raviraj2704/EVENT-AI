@@ -16,7 +16,7 @@ professional networking, and real-time engagement.
 - Frontend: React + Tailwind CSS
 - Backend: FastAPI + Python
 - Database: PostgreSQL
-- Deployment: Vercel + Railway
+- Deployment: Vercel + Render
 
 ## Setup Instructions
 See SETUP.md for detailed instructions
