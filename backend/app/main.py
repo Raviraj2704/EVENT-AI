@@ -36,12 +36,12 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:5173",
-        "https://event-ai-frontend-ravirajapanthulu-5771.vercel.app",
-        "https://eventai.vercel.app",
-        "*"  # Allow all (can be restricted in production)
-    ],
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "https://event-ai-frontend-ravirajapanthulu-5771.vercel.app",
+    "https://eventai.vercel.app",
+    "https://frontend-livid-two-96gqet7oy4.vercel.app"
+],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
