@@ -83,13 +83,13 @@ const RegisterScreen = () => {
     const generatedUsername = `${cleanFirstName}${cleanLastName}${randomSuffix}`;
 
     try {
-      // Pass the new generatedUsername as the first argument
+      // Reordered to match your backend logs (username, email, password, first_name, last_name)
       const response = await authService.register(
         generatedUsername,
-        formData.first_name,
-        formData.last_name,
         formData.email,
-        formData.password
+        formData.password,
+        formData.first_name,
+        formData.last_name
       )
 
       if (response.access_token) {
@@ -99,7 +99,24 @@ const RegisterScreen = () => {
       }
     } catch (error) {
       console.error('Registration error:', error)
-      const errorMessage = error.response?.data?.detail || 'Registration failed'
+      
+      // Safely parse FastAPI validation errors to prevent React White Screen Crash (#31)
+      let errorMessage = 'Registration failed. Please check your inputs.'
+      
+      if (error.response?.data?.detail) {
+        const detail = error.response.data.detail
+        if (typeof detail === 'string') {
+          errorMessage = detail
+        } else if (Array.isArray(detail)) {
+          errorMessage = detail.map(err => {
+             const fieldName = err.loc ? err.loc[err.loc.length - 1] : 'Field'
+             return `${fieldName}: ${err.msg}`
+          }).join(' | ')
+        }
+      } else if (error.message) {
+        errorMessage = error.message
+      }
+
       toast.error(errorMessage)
       setErrors({ submit: errorMessage })
     } finally {
