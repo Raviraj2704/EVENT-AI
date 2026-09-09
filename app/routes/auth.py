@@ -43,99 +43,61 @@ password_reset_attempts = {}
 
 
 # ============================================================================
-# REGISTER ENDPOINT
+# Register Endpoint
 # ============================================================================
 
-@router.post(
-    "/register",
-    response_model=TokenResponse,
-    status_code=status.HTTP_201_CREATED,
-    responses={400: {"model": ErrorResponse}, 409: {"model": ErrorResponse}}
-)
-async def register(
-    request: UserRegisterRequest,
-    db: Session = Depends(get_db)
-):
+@router.post("/register", response_model=TokenResponse)
+async def register(request: RegisterSchema, db: Session = Depends(get_db)):
     """
-    Register new user
-    
-    Args:
-        request: Registration data
-        db: Database session
-    
-    Returns:
-        TokenResponse: Access and refresh tokens
-    
-    Raises:
-        HTTPException: If username or email already exists
+    Register a new user
     """
-    # Check if username exists
-    existing_user = db.query(User).filter(User.username == request.username).first()
-    if existing_user:
-        logger.warning(f"Registration failed: Username {request.username} already exists")
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Username already exists"
-        )
-    
-    # Check if email exists
-    existing_email = db.query(User).filter(User.email == request.email).first()
-    if existing_email:
-        logger.warning(f"Registration failed: Email {request.email} already exists")
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Email already registered"
-        )
-    
     try:
+        # ✅ CHANGED: Filter by email instead of username
+        existing_user = db.query(User).filter(User.email == request.email).first()
+        
+        if existing_user:
+            raise HTTPException(
+                status_code=400,
+                detail="Email already registered"
+            )
+        
+        # Hash password
+        hashed_password = hash_password(request.password)
+        
         # Create new user
         new_user = User(
-            username=request.username,
-            email=request.email,
-            password_hash=hash_password(request.password),
             first_name=request.first_name,
             last_name=request.last_name,
-            is_active=True,
-            is_verified=False,
-            created_at=datetime.utcnow()
+            email=request.email,
+            hashed_password=hashed_password,
+            is_active=False,  # Email verification required
+            verification_token=generate_verification_token()
         )
         
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
         
-        logger.info(f"User registered: {new_user.username}")
+        # Generate tokens
+        access_token = create_access_token(data={"sub": str(new_user.id)})
+        refresh_token = create_refresh_token(data={"sub": str(new_user.id)})
         
-        # Send welcome email
-        send_welcome_email(request.email, request.username)
+        # Send verification email (async)
+        await send_verification_email(new_user.email, new_user.verification_token)
         
-        # Generate verification code
-        verification_code = generate_verification_code()
-        verification_codes[request.email] = {
-            "code": verification_code,
-            "expires_at": datetime.utcnow() + timedelta(minutes=15),
-            "attempts": 0
+        logger.info(f"✅ User registered: {new_user.email}")
+        
+        return {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "token_type": "bearer"
         }
         
-        # Send verification email
-        send_verification_email(request.email, request.username, verification_code)
-        
-        # Create token pair
-        tokens = create_token_pair(new_user.id)
-        
-        return TokenResponse(
-            access_token=tokens["access_token"],
-            refresh_token=tokens["refresh_token"],
-            expires_in=60 * 15  # 15 minutes
-        )
-    
+    except HTTPException as e:
+        raise e
     except Exception as e:
-        db.rollback()
-        logger.error(f"Registration error: {e}")
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Registration failed"
-        )
+        logger.error(f"❌ Registration error: {e}")
+        raise HTTPException(status_code=500, detail="Registration failed")
 
 
 # ============================================================================
