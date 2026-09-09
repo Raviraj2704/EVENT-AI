@@ -17,6 +17,8 @@ const RegisterScreen = () => {
   const { login } = useAuthStore()
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  
+  // State holds the exact fields needed
   const [formData, setFormData] = useState({
     first_name: '',
     last_name: '',
@@ -58,7 +60,7 @@ const RegisterScreen = () => {
       ...prev,
       [name]: value
     }))
-    // Clear error for this field
+    
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -76,14 +78,13 @@ const RegisterScreen = () => {
 
     setLoading(true)
     
-    // Generate a secure, URL-friendly username using first and last name
+    // Auto-generate username for the backend requirement
     const cleanFirstName = formData.first_name.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
     const cleanLastName = formData.last_name.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
     const randomSuffix = Math.floor(Math.random() * 10000);
     const generatedUsername = `${cleanFirstName}${cleanLastName}${randomSuffix}`;
 
     try {
-      // Reordered to match your backend logs (username, email, password, first_name, last_name)
       const response = await authService.register(
         generatedUsername,
         formData.email,
@@ -100,7 +101,7 @@ const RegisterScreen = () => {
     } catch (error) {
       console.error('Registration error:', error)
       
-      // Safely parse FastAPI validation errors to prevent React White Screen Crash (#31)
+      // Safely parse FastAPI validation errors to prevent React White Screen Crash
       let errorMessage = 'Registration failed. Please check your inputs.'
       
       if (error.response?.data?.detail) {
@@ -127,8 +128,10 @@ const RegisterScreen = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-secondary-50 flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
+        
         {/* Card */}
         <div className="bg-white rounded-2xl shadow-xl p-8">
+          
           {/* Header */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-full mb-4">
@@ -152,6 +155,7 @@ const RegisterScreen = () => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
+            
             {/* First Name */}
             <div>
               <label className="block text-sm font-medium text-neutral-700 mb-2">
