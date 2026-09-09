@@ -15,6 +15,7 @@ from app.routes import (
     auth, users, speakers, sessions, resources, ratings,
     announcements, social, leaderboard, badges, challenges,
     learning_paths, engagement, partners, analytics, admin
+
 )
 
 # Configure logging
@@ -33,14 +34,16 @@ app = FastAPI(
 # ============================================================================
 # CORS Configuration - CRITICAL FOR FRONTEND CONNECTION
 # ============================================================================
+from fastapi.middleware.cors import CORSMiddleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
         "http://localhost:5173",
-        "https://event-ai-frontend-ravirajapanthulu-5771.vercel.app",
-        "https://eventai.vercel.app",
-        "*"  # Allow all (can be restricted in production)
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:5173",
+        "https://frontend-livid-two-96gqdt7oy4.vercel.app",  # Your Vercel frontend URL
+        "*"
     ],
     allow_credentials=True,
     allow_methods=["*"],
