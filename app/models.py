@@ -1241,9 +1241,10 @@ class LearningPath(Base):
         back_populates="learning_path",
         cascade="all, delete-orphan"
     )
+    
+    # FIXED RELATIONSHIP (Removed back_populates to stop the 500 error crash)
     ratings = relationship(
         "Rating",
-        back_populates="learning_path",
         cascade="all, delete-orphan",
         foreign_keys="Rating.learning_path_id"
     )
@@ -1257,7 +1258,6 @@ class LearningPath(Base):
     
     def __repr__(self):
         return f"<LearningPath(id={self.id}, title={self.title})>"
-
 
 # ============================================================================
 # TABLE 18: LearningModules
