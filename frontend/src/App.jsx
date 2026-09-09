@@ -13,11 +13,11 @@ import { Toaster } from 'react-hot-toast'
 import { useAuthStore } from './store/authStore'
 
 // Pages - Auth
-import SplashScreen from './pages/SplashScreen'
-import LoginScreen from './pages/LoginScreen'
-import RegisterScreen from './pages/RegisterScreen' 
-import VerifyEmailScreen from './pages/VerifyEmailScreen'
-import CompleteProfileScreen from './pages/CompleteProfileScreen'
+import SplashScreen from './pages/auth/SplashScreen'
+import LoginScreen from './pages/auth/LoginScreen'
+import RegisterScreen from './pages/auth/RegisterScreen' 
+import VerifyEmailScreen from './pages/auth/VerifyEmailScreen'
+import CompleteProfileScreen from './pages/auth/CompleteProfileScreen'
 
 // Pages - Main
 import HomeScreen from './pages/main/HomeScreen'
