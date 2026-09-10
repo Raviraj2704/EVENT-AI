@@ -1,94 +1,131 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import apiClient from '../config/apiClient';
+// ============================================================================
+// Auth Store (Zustand)
+// ============================================================================
+// File: src/store/authStore.js
+// Purpose: Persistent authentication state management
+// Status: Production-Ready ✅
+
+import create from 'zustand'
+import { persist } from 'zustand/middleware'
 
 export const useAuthStore = create(
   persist(
     (set, get) => ({
+      // ============================================================================
+      // STATE
+      // ============================================================================
+      
+      token: null,
+      refreshToken: null,
       user: null,
-      token: localStorage.getItem('access_token') || null,
-      refreshToken: localStorage.getItem('refresh_token') || null,
-      isAuthenticated: !!localStorage.getItem('access_token'),
+      isAuthenticated: false,
       loading: false,
-      error: null,
-
-      setUser: (user) => set({ user }),
-
-      setTokens: (token, refreshToken) => {
-        if (token) localStorage.setItem('access_token', token);
-        if (refreshToken) localStorage.setItem('refresh_token', refreshToken);
-        set({ token, refreshToken, isAuthenticated: !!token });
-      },
-
+      
+      // ============================================================================
+      // ACTIONS
+      // ============================================================================
+      
+      // Check if user is already authenticated
       checkAuth: () => {
-        const token = localStorage.getItem('access_token');
-        set({ isAuthenticated: !!token, token });
-      },
-
-      register: async (first_name, last_name, username, email, password) => {
-        set({ loading: true, error: null });
         try {
-          const response = await apiClient.post('/auth/register', { 
-            first_name,
-            last_name,
-            username,
-            email, 
-            password 
-          });
-          set({ loading: false });
-          return response.data;
-        } catch (error) {
-          const detail = error.response?.data?.detail;
-          let errorMessage = 'Registration failed';
-
-          if (Array.isArray(detail) && detail.length > 0) {
-            errorMessage = detail
-              .map((err) => `${err.loc?.slice(-1)[0] || 'field'}: ${err.msg}`)
-              .join(', ');
-          } else if (typeof detail === 'string') {
-            errorMessage = detail;
+          const token = localStorage.getItem('access_token')
+          const user = localStorage.getItem('user_data')
+          
+          if (token && user) {
+            set({
+              token: token,
+              user: JSON.parse(user),
+              isAuthenticated: true
+            })
+            console.log('✅ User restored from localStorage')
           }
-
-          set({ error: errorMessage, loading: false });
-          // Throws a safe string to prevent the React #31 White Screen Crash
-          throw new Error(errorMessage); 
-        }
-      },
-
-      login: async (email, password) => {
-        set({ loading: true, error: null });
-        try {
-          // Fixed 422 Error: Sending standard JSON instead of Form Data
-          const response = await apiClient.post('/auth/login', {
-            username: email, 
-            password: password
-          });
-
-          const { access_token, refresh_token } = response.data;
-          get().setTokens(access_token, refresh_token);
-          set({ loading: false });
-          return response.data;
         } catch (error) {
-          const detail = error.response?.data?.detail;
-          const errorMessage = typeof detail === 'string' ? detail : 'Login failed. Please check your credentials.';
-          set({ error: errorMessage, loading: false });
-          // Throws a safe string to prevent the React #31 White Screen Crash
-          throw new Error(errorMessage); 
+          console.error('❌ Auth check error:', error)
+          set({ isAuthenticated: false })
         }
       },
-
-      updateUser: (newUserData) => set((state) => ({ 
-        user: { ...state.user, ...newUserData } 
-      })),
-
+      
+      // Login user
+      login: (accessToken, refreshToken, userData) => {
+        console.log('🔐 Logging in user:', userData?.email)
+        
+        // Save to localStorage (PERMANENT)
+        localStorage.setItem('access_token', accessToken)
+        localStorage.setItem('refresh_token', refreshToken || '')
+        localStorage.setItem('user_data', JSON.stringify(userData))
+        
+        // Update state
+        set({
+          token: accessToken,
+          refreshToken: refreshToken || null,
+          user: userData,
+          isAuthenticated: true,
+          loading: false
+        })
+      },
+      
+      // Logout user
       logout: () => {
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('refresh_token');
-        set({ user: null, token: null, refreshToken: null, isAuthenticated: false });
+        console.log('👋 Logging out user')
+        
+        // Clear localStorage
+        localStorage.removeItem('access_token')
+        localStorage.removeItem('refresh_token')
+        localStorage.removeItem('user_data')
+        
+        // Clear state
+        set({
+          token: null,
+          refreshToken: null,
+          user: null,
+          isAuthenticated: false,
+          loading: false
+        })
+      },
+      
+      // Update user profile
+      updateProfile: (userData) => {
+        console.log('📝 Updating profile')
+        
+        const updatedUser = { ...get().user, ...userData }
+        
+        // Update localStorage
+        localStorage.setItem('user_data', JSON.stringify(updatedUser))
+        
+        // Update state
+        set({ user: updatedUser })
+      },
+      
+      // Set loading state
+      setLoading: (loading) => {
+        set({ loading })
+      },
+      
+      // Set token (for token refresh)
+      setToken: (token) => {
+        localStorage.setItem('access_token', token)
+        set({ token })
       }
     }),
+    
+    // ============================================================================
+    // PERSIST CONFIG
+    // ============================================================================
     {
-      name: 'eventai-auth-storage',
+      name: 'eventai-auth-store', // localStorage key name
+      
+      // Only persist these fields
+      partialize: (state) => ({
+        token: state.token,
+        refreshToken: state.refreshToken,
+        user: state.user,
+        isAuthenticated: state.isAuthenticated
+      }),
+      
+      // Auto-load from localStorage on init
+      onRehydrateStorage: () => (state) => {
+        console.log('💾 Rehydrating auth store from localStorage')
+      }
     }
   )
-);
+)
