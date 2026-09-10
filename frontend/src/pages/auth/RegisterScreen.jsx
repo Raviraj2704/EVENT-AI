@@ -9,7 +9,7 @@ import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { Mail, Lock, User, AlertCircle, CheckCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { useAuthStore } from '../../store/authStore';
+import { useAuthStore } from '@/store/authStore';
 
 const RegisterScreen = () => {
   const navigate = useNavigate()
