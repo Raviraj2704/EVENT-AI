@@ -8,20 +8,17 @@ import { useNavigate } from 'react-router-dom'
 import { User, Mail, Building2, Briefcase, Camera, ArrowRight, Loader } from 'lucide-react'
 import toast from 'react-hot-toast'
 
-// TODO: Uncomment these when you create the store and config folders later!
-// import { useAuthStore } from '../../store/authStore'
-// import apiClient from '../../config/apiClient'
+// Real API and Store integrations activated
+import apiClient from '../../config/apiClient'
+import { useAuthStore } from '../../store/authStore'
 
 const CompleteProfileScreen = () => {
   const navigate = useNavigate()
   const fileInputRef = useRef(null)
 
-  // TODO: Uncomment this when you create the authStore later!
-  // const { user, updateProfile, loading } = useAuthStore()
-
-  // TEMPORARY VARIABLES (To prevent app crash until store is built)
-  const user = null
-  const loading = false
+  // Pulling real user data and update function from persistent store
+  const user = useAuthStore((state) => state.user)
+  const updateUser = useAuthStore((state) => state.updateUser)
 
   const [formData, setFormData] = useState({
     firstName: user?.first_name || '',
@@ -30,6 +27,7 @@ const CompleteProfileScreen = () => {
     jobTitle: user?.job_title || '',
     bio: user?.bio || ''
   })
+  
   const [avatar, setAvatar] = useState(user?.avatar_url || null)
   const [avatarFile, setAvatarFile] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -103,11 +101,11 @@ const CompleteProfileScreen = () => {
     if (!avatarFile) return null
 
     try {
-      // TEMPORARY: Simulate upload delay
+      // TEMPORARY: Simulate upload delay until backend avatar route is built
       await new Promise(resolve => setTimeout(resolve, 1000))
-      return avatar // return local preview URL for now
+      return avatar 
 
-      // TODO: When apiClient is ready, replace mock above with:
+      // TODO: When backend avatar endpoint is ready, uncomment this:
       /*
       const formDataForUpload = new FormData()
       formDataForUpload.append('file', avatarFile)
@@ -134,44 +132,43 @@ const CompleteProfileScreen = () => {
     setIsSubmitting(true)
 
     try {
+      // 1. Handle avatar upload if file is selected
       if (avatarFile) {
         await uploadAvatar()
       }
 
-      // TEMPORARY: Fake the auth token so your route guard doesn't kick you back to login
-      localStorage.setItem('token', 'temporary-mock-token')
-      
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      toast.success('Profile completed successfully!')
-      navigate('/home', { replace: true })
-
-      // TODO: When authStore is ready, replace the mock code above with this:
-      /*
-      const result = await updateProfile({
-        first_name: formData.firstName,
-        last_name: formData.lastName,
+      // 2. Send the real data to your FastAPI backend
+      const response = await apiClient.put('/users/profile', {
         company: formData.company,
         job_title: formData.jobTitle,
         bio: formData.bio
       })
 
-      if (result.success) {
-        toast.success('Profile completed successfully!')
-        navigate('/home', { replace: true })
-      } else {
-        toast.error(result.error || 'Profile update failed')
-      }
-      */
+      // 3. Save the updated user data permanently into your Zustand LocalStorage
+      updateUser({
+        company: formData.company,
+        job_title: formData.jobTitle,
+        bio: formData.bio
+      })
+
+      toast.success('Profile completed successfully!')
+      
+      // 4. Safely route to the main app dashboard
+      navigate('/home', { replace: true })
+
     } catch (err) {
-      toast.error('An error occurred. Please try again.')
+      console.error('Profile update error:', err)
+      
+      // Safely catch backend validation errors
+      const errorMessage = err.response?.data?.detail || 'Profile update failed. Please try again.'
+      toast.error(typeof errorMessage === 'string' ? errorMessage : 'Invalid data submitted.')
     } finally {
       setIsSubmitting(false)
     }
   }
 
   const handleSkip = () => {
-    // Also set a fake token here so skipping doesn't trigger the redirect loop
-    localStorage.setItem('token', 'temporary-mock-token')
+    // Navigate straight to home (real token is already in LocalStorage from Login)
     navigate('/home', { replace: true })
   }
 
@@ -340,10 +337,10 @@ const CompleteProfileScreen = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={isSubmitting || loading}
+            disabled={isSubmitting}
             className="w-full bg-primary-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-primary-700 transition duration-200 mt-8 flex items-center justify-center gap-2"
           >
-            {isSubmitting || loading ? (
+            {isSubmitting ? (
               <>
                 <Loader className="w-5 h-5 animate-spin" />
                 Completing...
