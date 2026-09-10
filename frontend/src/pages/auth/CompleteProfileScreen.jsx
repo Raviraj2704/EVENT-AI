@@ -1,7 +1,7 @@
 // ============================================================================
 // Complete Profile Screen - CRASH FREE VERSION
 // ============================================================================
-// File: src/pages/CompleteProfileScreen.jsx
+// File: src/pages/auth/CompleteProfileScreen.jsx
 
 import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -9,8 +9,8 @@ import { User, Mail, Building2, Briefcase, Camera, ArrowRight, Loader } from 'lu
 import toast from 'react-hot-toast'
 
 // TODO: Uncomment these when you create the store and config folders later!
-// import { useAuthStore } from '../store/authStore'
-// import apiClient from '../config/apiClient'
+// import { useAuthStore } from '../../store/authStore'
+// import apiClient from '../../config/apiClient'
 
 const CompleteProfileScreen = () => {
   const navigate = useNavigate()
@@ -134,13 +134,14 @@ const CompleteProfileScreen = () => {
     setIsSubmitting(true)
 
     try {
-      // Upload avatar if changed
       if (avatarFile) {
         await uploadAvatar()
       }
 
-      // TEMPORARY: Simulate API update profile
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      // TEMPORARY: Fake the auth token so your route guard doesn't kick you back to login
+      localStorage.setItem('token', 'temporary-mock-token')
+      
+      await new Promise(resolve => setTimeout(resolve, 1000))
       toast.success('Profile completed successfully!')
       navigate('/home', { replace: true })
 
@@ -169,6 +170,8 @@ const CompleteProfileScreen = () => {
   }
 
   const handleSkip = () => {
+    // Also set a fake token here so skipping doesn't trigger the redirect loop
+    localStorage.setItem('token', 'temporary-mock-token')
     navigate('/home', { replace: true })
   }
 
