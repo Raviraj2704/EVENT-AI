@@ -50,19 +50,18 @@ export const useAuthStore = create(
           }
 
           set({ error: errorMessage, loading: false });
-          throw new Error(errorMessage);
+          // Throws a safe string to prevent the React #31 White Screen Crash
+          throw new Error(errorMessage); 
         }
       },
 
       login: async (email, password) => {
         set({ loading: true, error: null });
         try {
-          const formData = new URLSearchParams();
-          formData.append('username', email);
-          formData.append('password', password);
-
-          const response = await apiClient.post('/auth/login', formData, {
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          // Fixed 422 Error: Sending standard JSON instead of Form Data
+          const response = await apiClient.post('/auth/login', {
+            username: email, 
+            password: password
           });
 
           const { access_token, refresh_token } = response.data;
@@ -71,18 +70,10 @@ export const useAuthStore = create(
           return response.data;
         } catch (error) {
           const detail = error.response?.data?.detail;
-          let errorMessage = 'Login failed';
-
-          if (Array.isArray(detail) && detail.length > 0) {
-            errorMessage = detail
-              .map((err) => `${err.loc?.slice(-1)[0] || 'field'}: ${err.msg}`)
-              .join(', ');
-          } else if (typeof detail === 'string') {
-            errorMessage = detail;
-          }
-
+          const errorMessage = typeof detail === 'string' ? detail : 'Login failed. Please check your credentials.';
           set({ error: errorMessage, loading: false });
-          throw new Error(errorMessage); // Pass the safe string, not the object
+          // Throws a safe string to prevent the React #31 White Screen Crash
+          throw new Error(errorMessage); 
         }
       },
 
@@ -97,7 +88,7 @@ export const useAuthStore = create(
       }
     }),
     {
-      name: 'eventai-auth-storage', // Persistent key in browser storage
+      name: 'eventai-auth-storage',
     }
   )
 );
