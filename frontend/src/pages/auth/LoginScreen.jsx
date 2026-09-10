@@ -7,20 +7,15 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader } from 'lucide-react'
 import toast from 'react-hot-toast'
-
-// TODO: Uncomment this when you create the store folder later!
-// import { useAuthStore } from '../store/authStore'
+import { useAuthStore } from '../store/authStore' // Ensure path matches your structure
 
 const LoginScreen = () => {
   const navigate = useNavigate()
   const location = useLocation()
   
-  // TODO: Uncomment this when you create the authStore later!
-  // const { login, loading, error, isAuthenticated } = useAuthStore()
-
-  // TEMPORARY VARIABLES (To prevent app crash until store is built)
-  const loading = false
-  const isAuthenticated = false
+  // Pull functions directly from the permanent Zustand store
+  const login = useAuthStore((state) => state.login)
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated)
 
   const [formData, setFormData] = useState({
     usernameOrEmail: '',
@@ -30,11 +25,13 @@ const LoginScreen = () => {
   const [formErrors, setFormErrors] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  // Redirect users who navigate here but are already logged in
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && !isSubmitting) {
+      // Basic fallback routing. Precise conditional routing happens in handleSubmit.
       navigate('/home', { replace: true })
     }
-  }, [isAuthenticated, navigate])
+  }, [isAuthenticated, isSubmitting, navigate])
 
   const validateForm = () => {
     const errors = {}
@@ -79,32 +76,23 @@ const LoginScreen = () => {
     setIsSubmitting(true)
 
     try {
-      // TEMPORARY: Simulate a network request (Wait 1 second)
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      // Execute the real API login using the state variable
+      const data = await login(formData.usernameOrEmail, formData.password)
       
-      // FIX: Save email to sessionStorage so the next screen doesn't kick you out
-      sessionStorage.setItem('tempEmail', formData.usernameOrEmail)
-      
-      toast.success('Code sent! Please verify your email.')
-      
-      // FIX: Route to verify-email instead of home, passing the email state
-      navigate('/auth/verify-email', { 
-        replace: true,
-        state: { email: formData.usernameOrEmail }
-      })
+      toast.success('Welcome back!')
 
-      // TODO: When authStore is ready, replace the 4 lines above with this:
-      /*
-      const result = await login(formData.usernameOrEmail, formData.password)
-      if (result.success) {
-        toast.success('Login successful!')
-        navigate('/home', { replace: true })
+      // Check if critical profile data is missing to strictly route them
+      if (!data.user?.company || !data.user?.job_title) {
+        navigate('/auth/complete-profile', { replace: true })
       } else {
-        toast.error(result.error || 'Login failed')
+        navigate('/home', { replace: true })
       }
-      */
-    } catch (err) {
-      toast.error('An error occurred. Please try again.')
+
+    } catch (error) {
+      // Pull the exact error string set by authStore.js
+      const storeError = useAuthStore.getState().error
+      toast.error(storeError || 'Login failed. Please check your credentials.')
+      console.error("Login failed", error)
     } finally {
       setIsSubmitting(false)
     }
@@ -205,10 +193,10 @@ const LoginScreen = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            disabled={isSubmitting || loading}
+            disabled={isSubmitting}
             className="w-full bg-primary-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-primary-700 transition duration-200 mt-8 flex items-center justify-center gap-2"
           >
-            {isSubmitting || loading ? (
+            {isSubmitting ? (
               <>
                 <Loader className="w-5 h-5 animate-spin" />
                 Signing in...
