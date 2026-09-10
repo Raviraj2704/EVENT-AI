@@ -10,7 +10,7 @@ import toast from 'react-hot-toast'
 
 // Real API and Store integrations activated
 import apiClient from '../../../config/apiClient';
-import { useAuthStore } from '../../../store/authStore';
+import { useAuthStore } from '../../store/authStore';
 
 const CompleteProfileScreen = () => {
   const navigate = useNavigate()
