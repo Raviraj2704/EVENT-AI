@@ -50,7 +50,7 @@ export const useAuthStore = create(
           }
 
           set({ error: errorMessage, loading: false });
-          throw error;
+          throw new Error(errorMessage);
         }
       },
 
@@ -70,11 +70,19 @@ export const useAuthStore = create(
           set({ loading: false });
           return response.data;
         } catch (error) {
-          set({ 
-            error: error.response?.data?.detail || 'Login failed', 
-            loading: false 
-          });
-          throw error;
+          const detail = error.response?.data?.detail;
+          let errorMessage = 'Login failed';
+
+          if (Array.isArray(detail) && detail.length > 0) {
+            errorMessage = detail
+              .map((err) => `${err.loc?.slice(-1)[0] || 'field'}: ${err.msg}`)
+              .join(', ');
+          } else if (typeof detail === 'string') {
+            errorMessage = detail;
+          }
+
+          set({ error: errorMessage, loading: false });
+          throw new Error(errorMessage); // Pass the safe string, not the object
         }
       },
 
