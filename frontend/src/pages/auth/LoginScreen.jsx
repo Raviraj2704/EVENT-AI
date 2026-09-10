@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { useAuthStore } from '../store/authStore' // Ensure path matches your structure
+import { useAuthStore } from '../../../store/authStore';
 
 const LoginScreen = () => {
   const navigate = useNavigate()

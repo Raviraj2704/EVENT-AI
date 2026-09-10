@@ -9,8 +9,8 @@ import { User, Mail, Building2, Briefcase, Camera, ArrowRight, Loader } from 'lu
 import toast from 'react-hot-toast'
 
 // Real API and Store integrations activated
-import apiClient from '../../config/apiClient'
-import { useAuthStore } from '../../store/authStore'
+import apiClient from '../../../config/apiClient';
+import { useAuthStore } from '../../../store/authStore';
 
 const CompleteProfileScreen = () => {
   const navigate = useNavigate()
