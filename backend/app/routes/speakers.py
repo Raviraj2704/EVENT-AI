@@ -13,7 +13,7 @@ from typing import List, Optional
 import logging
 
 from app.database import get_db
-from app.models import Speaker, User, SessionAttendance, Rating, RatingType
+from app.models import Speaker, User, Rating, RatingType
 from app.schemas import (
     SpeakerResponse, SpeakerDetailResponse, SpeakerRatingRequest,
     ErrorResponse
