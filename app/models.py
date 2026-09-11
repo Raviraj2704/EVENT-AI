@@ -551,8 +551,6 @@ class Rating(Base):
     session = relationship("Session", back_populates="ratings", foreign_keys=[session_id])
     resource = relationship("Resource", back_populates="ratings", foreign_keys=[resource_id])
     
-    learning_path = relationship("LearningPath", back_populates="ratings", foreign_keys=[learning_path_id])
-    
     # Indexes
     __table_args__ = (
         Index('idx_rating_type_target', 'rating_type', 'target_id'),
@@ -1241,10 +1239,9 @@ class LearningPath(Base):
         back_populates="learning_path",
         cascade="all, delete-orphan"
     )
-    
-    # FIXED RELATIONSHIP (Removed back_populates to stop the 500 error crash)
     ratings = relationship(
         "Rating",
+        back_populates="learning_path",
         cascade="all, delete-orphan",
         foreign_keys="Rating.learning_path_id"
     )
@@ -1258,6 +1255,7 @@ class LearningPath(Base):
     
     def __repr__(self):
         return f"<LearningPath(id={self.id}, title={self.title})>"
+
 
 # ============================================================================
 # TABLE 18: LearningModules
@@ -1369,6 +1367,11 @@ class UserLearningProgress(Base):
     
     def __repr__(self):
         return f"<UserLearningProgress(user_id={self.user_id}, learning_path_id={self.learning_path_id})>"
+
+
+# Add relationship to Rating model for learning_paths
+learning_path_id = Column(Integer, ForeignKey("learning_paths.id"), index=True)
+learning_path = relationship("LearningPath", back_populates="ratings", foreign_keys=[learning_path_id])
 
 # ============================================================================
 # TABLE 20: Polls (Page 21: Engagement Center)

@@ -1,34 +1,38 @@
 # ============================================================================
-# Configuration Module
+# Application Configuration
 # ============================================================================
-# File: app/config.py
-# Purpose: Environment variable management and validation
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+import os
 
 class Settings(BaseSettings):
-    # App Settings
-    app_name: str = "EventAI API"
-    app_version: str = "1.0.0"
-    debug: bool = True
-    log_level: str = "INFO"
+    # Database - Safely defaults to empty so it forces loading from .env
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "")
     
-    # Database Setup
-    database_url: str
+    # JWT - Uses a dummy fallback for safety
+    SECRET_KEY: str = os.getenv("SECRET_KEY", "fallback-secret-key-do-not-use-in-prod")
+    ALGORITHM: str = os.getenv("ALGORITHM", "HS256")
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
     
-    # Security / Auth
-    secret_key: str = "fallback-secret-key-change-in-production"
-    algorithm: str = "HS256"
-    access_token_expire_minutes: int = 15
+    # URLs
+    FRONTEND_URL: str = os.getenv("FRONTEND_URL", "https://frontend-livid-two-96gqet7oy4.vercel.app")
+    BACKEND_URL: str = os.getenv("BACKEND_URL", "https://event-ai-backend-o2f3.onrender.com")
     
-    # CORS
-    allowed_origins: str = "http://localhost:3000,http://localhost:5173,https://event-ai-frontend-ravirajapanthulu-5771.vercel.app"
-
-    # Tell Pydantic to read from .env and ignore any extra variables it doesn't need yet
-    model_config = SettingsConfigDict(
-        env_file=".env", 
-        extra="ignore", 
-        case_sensitive=False
-    )
+    # Email
+    SMTP_SERVER: str = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+    SMTP_PORT: int = int(os.getenv("SMTP_PORT", "587"))
+    SMTP_USER: str = os.getenv("SMTP_USER", "")
+    SMTP_PASSWORD: str = os.getenv("SMTP_PASSWORD", "")
+    
+    # App
+    APP_NAME: str = "EventAI"
+    APP_VERSION: str = "1.0.0"
+    
+    # AI Keys
+    groq_api_key: str | None = None
+    
+    # Pydantic V2 Configuration
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore", case_sensitive=False)
 
 settings = Settings()
