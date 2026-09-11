@@ -16,7 +16,8 @@ from app.schemas import (
     UserProfileResponse, UserUpdateRequest, UserUpdateResponse,
     AvatarUploadResponse, ErrorResponse
 )
-from app.utils.auth import verify_token
+# ✅ FIXED: Import decode_token instead of verify_token
+from app.utils.auth import decode_token 
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 
@@ -35,21 +36,22 @@ def get_current_user(
 ) -> User:
     """
     Get current authenticated user from JWT token
-    
-    Args:
-        credentials: Bearer token
-        db: Database session
-    
-    Returns:
-        User: Current user object
-    
-    Raises:
-        HTTPException: If token invalid or user not found
     """
     try:
-        # Verify token
-        payload = verify_token(credentials.credentials)
-        user_id = int(payload.get("sub"))
+        # ✅ FIXED: Use decode_token to validate and extract the payload
+        payload = decode_token(credentials.credentials)
+        
+        # Some JWT implementations return the payload, others just the user string. 
+        # Safely extract the ID.
+        user_id_str = payload.get("sub") if isinstance(payload, dict) else payload
+        
+        if not user_id_str:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token format"
+            )
+            
+        user_id = int(user_id_str)
         
         # Get user
         user = db.query(User).filter(User.id == user_id).first()
@@ -91,12 +93,6 @@ async def get_current_user_profile(
 ):
     """
     Get current user's profile
-    
-    Args:
-        current_user: Authenticated user
-    
-    Returns:
-        UserProfileResponse: User profile data
     """
     try:
         return UserProfileResponse.from_attributes(current_user)
@@ -124,17 +120,6 @@ async def update_user_profile(
 ):
     """
     Update current user's profile
-    
-    Args:
-        request: Profile update data
-        current_user: Authenticated user
-        db: Database session
-    
-    Returns:
-        UserUpdateResponse: Updated profile
-    
-    Raises:
-        HTTPException: If update fails
     """
     try:
         # Update fields
@@ -189,17 +174,6 @@ async def upload_avatar(
 ):
     """
     Upload user avatar
-    
-    Args:
-        file: Avatar image file
-        current_user: Authenticated user
-        db: Database session
-    
-    Returns:
-        AvatarUploadResponse: Avatar URL
-    
-    Raises:
-        HTTPException: If upload fails
     """
     try:
         # Validate file type
@@ -261,16 +235,6 @@ async def get_user_by_id(
 ):
     """
     Get user by ID
-    
-    Args:
-        user_id: User ID
-        db: Database session
-    
-    Returns:
-        UserProfileResponse: User profile data
-    
-    Raises:
-        HTTPException: If user not found
     """
     try:
         user = db.query(User).filter(User.id == user_id).first()
@@ -314,13 +278,6 @@ async def delete_account(
 ):
     """
     Delete user account
-    
-    Args:
-        current_user: Authenticated user
-        db: Database session
-    
-    Returns:
-        dict: Success message
     """
     try:
         # Soft delete - mark as inactive

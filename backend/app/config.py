@@ -2,25 +2,21 @@
 # Application Configuration
 # ============================================================================
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 import os
-from datetime import timedelta
 
 class Settings(BaseSettings):
-    # Database
-    DATABASE_URL: str = os.getenv(
-        "DATABASE_URL",
-        "postgresql://neondb_owner:npg_XhQ8NQboVC7H@ep-muddy-mountain-a5q3rcye-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require"
-    )
+    # Database - Safely defaults to empty so it forces loading from .env
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "")
     
-    # JWT
-    SECRET_KEY: str = os.getenv("SECRET_KEY", "9f86d081884c7d659a2feaa0c55ad015")
+    # JWT - Uses a dummy fallback for safety
+    SECRET_KEY: str = os.getenv("SECRET_KEY", "fallback-secret-key-do-not-use-in-prod")
     ALGORITHM: str = os.getenv("ALGORITHM", "HS256")
     ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
     
     # URLs
-    FRONTEND_URL: str = os.getenv("FRONTEND_URL", "http://localhost:3000")
+    FRONTEND_URL: str = os.getenv("FRONTEND_URL", "https://frontend-livid-two-96gqet7oy4.vercel.app")
     BACKEND_URL: str = os.getenv("BACKEND_URL", "https://event-ai-backend-o2f3.onrender.com")
     
     # Email
@@ -33,8 +29,10 @@ class Settings(BaseSettings):
     APP_NAME: str = "EventAI"
     APP_VERSION: str = "1.0.0"
     
-    class Config:
-        env_file = ".env"
-        case_sensitive = False
+    # AI Keys
+    groq_api_key: str | None = None
+    
+    # Pydantic V2 Configuration
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore", case_sensitive=False)
 
 settings = Settings()

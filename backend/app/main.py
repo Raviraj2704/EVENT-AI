@@ -52,7 +52,7 @@ app.add_middleware(
         "http://localhost:5173",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:5173",
-        "https://frontend-livid-two-96gqdt7oy4.vercel.app",
+        "https://frontend-livid-two-96gqet7oy4.vercel.app",
         "https://event-ai-psi.vercel.app",
         "*"  # For development only
     ],
@@ -69,8 +69,7 @@ app.add_middleware(
 
 from app.routes import (
     auth, users, sessions, speakers, resources, ratings,
-    announcements, social, badges, challenges, learning_paths,
-    modules, polls, quizzes, activities, partners
+    announcements, social, badges, challenges, learning_paths, partners
 )
 
 # ============================================================================
@@ -88,10 +87,6 @@ app.include_router(social.router, prefix="/api/v1/social", tags=["social"])
 app.include_router(badges.router, prefix="/api/v1/badges", tags=["badges"])
 app.include_router(challenges.router, prefix="/api/v1/challenges", tags=["challenges"])
 app.include_router(learning_paths.router, prefix="/api/v1/learning-paths", tags=["learning_paths"])
-app.include_router(modules.router, prefix="/api/v1/modules", tags=["modules"])
-app.include_router(polls.router, prefix="/api/v1/polls", tags=["polls"])
-app.include_router(quizzes.router, prefix="/api/v1/quizzes", tags=["quizzes"])
-app.include_router(activities.router, prefix="/api/v1/activities", tags=["activities"])
 app.include_router(partners.router, prefix="/api/v1/partners", tags=["partners"])
 
 # ============================================================================
