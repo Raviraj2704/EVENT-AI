@@ -6,6 +6,8 @@
 # Status: Production-Ready ✅
 # NOTE: This is Part 1 - User & Auth Models
 
+from openai import BaseModel
+from anthropic import BaseModel
 from sqlalchemy import (
     Column, Integer, String, Text, Boolean, Float, DateTime, 
     ForeignKey, JSON, Enum as SQLEnum, Table, UniqueConstraint,
@@ -1889,4 +1891,17 @@ class AdminLog(Base):
     )
     
     def __repr__(self):
-        return f"<AdminLog(id={self.id}, action={self.action})>"    
+        return f"<AdminLog(id={self.id}, action={self.action})>"  
+
+class SessionAttendance(BaseModel):
+    __tablename__ = "session_attendance"
+    
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("user.id"))
+    session_id = Column(Integer, ForeignKey("session.id"))
+    status = Column(String, default="registered")
+    checked_in_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, default=datetime.now)
+    
+    user = relationship("User")
+    session = relationship("Session")      

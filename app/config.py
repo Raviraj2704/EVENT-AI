@@ -7,7 +7,7 @@ import os
 
 class Settings(BaseSettings):
     # Database - Safely defaults to empty so it forces loading from .env
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "")
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "") 
     
     # JWT - Uses a dummy fallback for safety
     SECRET_KEY: str = os.getenv("SECRET_KEY", "fallback-secret-key-do-not-use-in-prod")
