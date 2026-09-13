@@ -1893,7 +1893,7 @@ class AdminLog(Base):
     def __repr__(self):
         return f"<AdminLog(id={self.id}, action={self.action})>"  
 
-class SessionAttendance(BaseModel):
+class SessionAttendance(Base):
     __tablename__ = "session_attendance"
     
     id = Column(Integer, primary_key=True)
