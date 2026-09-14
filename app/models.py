@@ -5,9 +5,7 @@
 # Purpose: Define ORM models for database tables
 # Status: Production-Ready ✅
 # NOTE: This is Part 1 - User & Auth Models
-
-from openai import BaseModel
-from anthropic import BaseModel
+      
 from sqlalchemy import (
     Column, Integer, String, Text, Boolean, Float, DateTime, 
     ForeignKey, JSON, Enum as SQLEnum, Table, UniqueConstraint,
@@ -1895,13 +1893,49 @@ class AdminLog(Base):
 
 class SessionAttendance(Base):
     __tablename__ = "session_attendance"
-    
+    __table_args__ = {'extend_existing': True}
+
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("user.id"))
-    session_id = Column(Integer, ForeignKey("session.id"))
+    user_id = Column(Integer, ForeignKey("users.id"))
+    session_id = Column(Integer, ForeignKey("sessions.id"))
     status = Column(String, default="registered")
     checked_in_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.now)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User", back_populates="sessions_attended")
+    session = relationship("Session", back_populates="attendees")
+
+# ============= NOTIFICATION MODELS =============
+class Notification(Base):
+    __tablename__ = "notifications"
+    __table_args__ = {'extend_existing': True}
     
-    user = relationship("User")
-    session = relationship("Session")      
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, index=True)
+    event_id = Column(Integer, index=True)
+    notification_type = Column(String(50))  
+    title = Column(String(200))
+    message = Column(Text)
+    icon_emoji = Column(String(10))
+    related_id = Column(Integer, nullable=True)  
+    is_read = Column(Boolean, default=False)
+    action_url = Column(String(500), nullable=True)  
+    created_at = Column(DateTime, default=datetime.utcnow)
+    read_at = Column(DateTime, nullable=True)
+
+class NotificationPreference(Base):
+    __tablename__ = "notification_preferences"
+    __table_args__ = {'extend_existing': True}
+    
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, index=True, unique=True)
+    event_id = Column(Integer, index=True)
+    enable_session_reminders = Column(Boolean, default=True)
+    enable_review_notifications = Column(Boolean, default=True)
+    enable_connection_requests = Column(Boolean, default=True)
+    enable_messages = Column(Boolean, default=True)
+    enable_announcements = Column(Boolean, default=True)
+    enable_email = Column(Boolean, default=False)
+    enable_push = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow)

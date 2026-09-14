@@ -4,10 +4,14 @@
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 import os
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables from .env file
 
 class Settings(BaseSettings):
     # Database - Safely defaults to empty so it forces loading from .env
     DATABASE_URL: str = os.getenv("DATABASE_URL", "") 
+    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "") # <-- Add this line
     
     # JWT - Uses a dummy fallback for safety
     SECRET_KEY: str = os.getenv("SECRET_KEY", "fallback-secret-key-do-not-use-in-prod")

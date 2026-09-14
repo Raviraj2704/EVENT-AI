@@ -813,3 +813,59 @@ class SuccessResponse(BaseModel):
     success: bool
     message: str
     data: Optional[dict] = None
+
+# ============= NOTIFICATION SCHEMAS =============
+class NotificationCreate(BaseModel):
+    user_id: int
+    event_id: int
+    notification_type: str
+    title: str
+    message: str
+    icon_emoji: str
+    related_id: Optional[int] = None
+    action_url: Optional[str] = None
+
+class NotificationResponse(BaseModel):
+    id: int
+    user_id: int
+    event_id: int
+    notification_type: str
+    title: str
+    message: str
+    icon_emoji: str
+    related_id: Optional[int]
+    is_read: bool
+    action_url: Optional[str]
+    created_at: datetime
+    read_at: Optional[datetime]
+
+    class Config:
+        from_attributes = True
+
+class NotificationsListResponse(BaseModel):
+    total: int
+    unread_count: int
+    notifications: List[NotificationResponse]
+
+class NotificationPreferenceResponse(BaseModel):
+    user_id: int
+    event_id: int
+    enable_session_reminders: bool
+    enable_review_notifications: bool
+    enable_connection_requests: bool
+    enable_messages: bool
+    enable_announcements: bool
+    enable_email: bool
+    enable_push: bool
+
+    class Config:
+        from_attributes = True
+
+class NotificationPreferenceUpdate(BaseModel):
+    enable_session_reminders: Optional[bool] = None
+    enable_review_notifications: Optional[bool] = None
+    enable_connection_requests: Optional[bool] = None
+    enable_messages: Optional[bool] = None
+    enable_announcements: Optional[bool] = None
+    enable_email: Optional[bool] = None
+    enable_push: Optional[bool] = None    
