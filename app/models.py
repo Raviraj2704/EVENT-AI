@@ -1891,20 +1891,6 @@ class AdminLog(Base):
     def __repr__(self):
         return f"<AdminLog(id={self.id}, action={self.action})>"  
 
-class SessionAttendance(Base):
-    __tablename__ = "session_attendance"
-    __table_args__ = {'extend_existing': True}
-
-    id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    session_id = Column(Integer, ForeignKey("sessions.id"))
-    status = Column(String, default="registered")
-    checked_in_at = Column(DateTime, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-
-    user = relationship("User", back_populates="sessions_attended")
-    session = relationship("Session", back_populates="attendees")
-
 # ============= NOTIFICATION MODELS =============
 class Notification(Base):
     __tablename__ = "notifications"
